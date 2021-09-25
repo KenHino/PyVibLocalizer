@@ -1,0 +1,11 @@
+data = {}
+data['H'] = [ 1.0078250, 1, 'white'] # weight, atom radius[bohr], color
+data['B'] = [10.81, 0.85/0.53, 'pink']
+data['C'] = [12.011, 0.70/0.53, 'black']
+data['N'] = [14.007, 0.65/0.53, 'blue']
+data['O'] = [15.9949146, 0.60/0.53, 'red']
+data['F'] = [18.988, 0.57/0.53, 'light brue']
+data['P'] = [30.973762, 1.8/0.53, 'orange']
+data['S'] = [32.06, 1.0/0.53, 'yellow']
+data['Cl'] = [35, 1.02/0.53, 'light green']
+data['Br'] = [79.904, 1.2/0.53, 'dark red']
