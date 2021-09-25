@@ -25,3 +25,5 @@ to maximize, metrices, this program used `scipy.optimized.miniimize`, not jacobi
 - coordinate unit must be Bohr
 
 - `.minfo` file is made by SINDO(https://tms.riken.jp/research/software/sindo/)
+
+- to run this program, execute `python main.py`
