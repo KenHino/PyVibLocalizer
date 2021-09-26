@@ -49,7 +49,7 @@ class simulator:
         self.atom = [a[0] for a in geom]
         self.coord = [c[1] for c in geom]
         self.bond = [[self.coord[i], self.coord[k]] for (i,k) in itertools.combinations(range(len(self.atom)), 2) \
-                if (data[self.atom[i]][1]+data[self.atom[k]][1]) > dist(self.coord[i], self.coord[k])]
+                if (data[self.atom[i]][1]+data[self.atom[k]][1]) + 0.15 > dist(self.coord[i], self.coord[k])]
 
         
         self.nmode = len(self.disp)
@@ -79,7 +79,7 @@ class simulator:
         buttonFrame.pack()
 
         #graph initialize
-        fig = plt.figure(figsize=(6,6))
+        fig = plt.figure(figsize=(8,8))
         ax = fig.add_subplot(111, projection='3d')
         ax.set_box_aspect((1,1,1))
         ax.axis('off')
