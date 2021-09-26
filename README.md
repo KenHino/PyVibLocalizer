@@ -17,4 +17,4 @@ to maximize, metrices, this program used `scipy.optimized.miniimize`, not jacobi
 
 - `.minfo` file is made by SINDO(https://tms.riken.jp/research/software/sindo/)
 
-- to run this program, execute `python main.py`
+- to run this program, execute `python {$mol_name}.py` (example; moL_name=ch2o, c6h8)
