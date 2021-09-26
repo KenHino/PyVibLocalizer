@@ -29,7 +29,7 @@ class visualizer(ttk.Frame):
 
     def plot_sphere(self,r, center, color, ax):
         # Make data
-        _N = 20
+        _N = 30
         u = np.linspace(0, 2 * np.pi, _N)
         v = np.linspace(0, np.pi, _N)
         x = r * np.outer(np.cos(u), np.sin(v)) + center[0]
@@ -45,7 +45,7 @@ class visualizer(ttk.Frame):
         z = np.linspace(bond[0][2], bond[1][2], 30)
         ax.plot(x,y,z,ms=2,linewidth=4, color='gray')
 
-    def plot_arrow(self, starts, vector, ax, scale= 8):
+    def plot_arrow(self, starts, vector, ax, scale= 10):
         star = np.array(starts).T
         vec = np.array(vector).reshape(self.natom,3).T
         for x,y,z,u,v,w in zip(*star, *vec):
