@@ -1,6 +1,6 @@
 import itertools
+from collections import defaultdict, Counter
 import math
-
 import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -18,25 +18,105 @@ def dist(A, B):
         dum += (a-b)**2
     return math.sqrt(dum)
 
-def read_minfo(file_name):
+def read_minfo(file_name, use_trans=False, use_rot=False):
     geom = []
     freq = []
     disp = []
+    read_geom = False
+    read_disp = False
+    read_freq = False
+    file = open(file_name,"r")
+    for i, line in enumerate(file):
+        if line == '[ Atomic Data ]\n':
+            read_geom = True
+            continue
+
+        elif line == 'Translational Frequency\n' and use_trans:
+            read_freq = True
+            read_disp = False
+            continue
+
+        elif line == 'Translational vector\n' and use_trans:
+            read_freq = False
+            read_disp = True
+            continue
+
+        elif line == 'Rotational Frequency\n' and use_rot:
+            read_freq = True
+            read_disp = False
+            continue
+
+        elif line == 'Rotational vector\n' and use_rot:
+            read_freq = False
+            read_disp = True
+            continue
+
+        elif line == 'Vibrational Frequency\n':
+            read_freq = True
+            read_disp = False
+            continue
+
+        elif line == 'Vibrational vector\n':
+            read_freq = False
+            read_disp = True
+            continue
+
+        elif read_geom:
+            if line == '\n':
+                read_geom = False
+                continue
+            else:
+                line = line.replace(',','').replace('E','e')
+                words = line.split()
+                if len(words) == 6:
+                    geom.append([words[0], [float(w) for w in words[3:6]]])
+                else:
+                    natom = int(words[0])
+                continue
+
+        elif read_freq:
+            if line[-2] == ' ':
+                line = line.replace(',','').replace('e','e')
+                words = line.split()
+                freq.extend([float(w) for w in words])
+                continue
+
+        elif read_disp:
+            if line[-2] == ' ':
+                line = line.replace(',','').replace('e','e')
+                words = line.split()
+                disp.extend([float(w) for w in words])
+                continue
+
+    disp = [disp[3*natom*k:3*natom*(k+1)] for k in range(len(disp)//3//natom)]
+
     return geom, freq, disp
 
-def write_minfo(file_name, geom, freq, disp):
-    a =0
+def write_minfo(file_name, freq, disp):
+    nmode = len(freq)
+    contents = 'Vibrational Frequency\n'
+    contents += str(nmode) + '\n'
+    for imode in range(nmode):
+        contents += "{:>15.8e}".format(freq[imode])
+        if imode % 5 == 4 or imode == nmode -1:
+            contents += ' \n'
+        else:
+            contents += ', '
 
-def read_gout(file_name):
-    geom = []
-    freq = []
-    disp = []
-    return geom, freq, disp
+    contents += 'Vibrational vector\n'
+    for imode in range(nmode):
+        contents += 'Mode ' + str(imode+1) + '\n'
+        contents += str(len(disp[imode])) + '\n'
+        for k in range(len(disp[imode])):
+            contents += "{:>15.8e}".format(disp[imode][k])
+            if k % 5 == 4 or k == len(disp[imode]) - 1:
+                contents += ' \n'
+            else:
+                contents += ', '
 
-def write_gout(file_name, geom, freq, disp):
-    a=0
-
-
+    file = open(file_name, 'w')
+    file.write(contents)
+    file.close()
 
 class simulator:
     def __init__(self, geom, freq, disp, unit='Bohr'):
@@ -58,7 +138,7 @@ class simulator:
         self.Q_mat = np.matrix(self.disp).T
 
 
-    def visualize(self):
+    def visualize(self, arrow_scale = 10):
         ### root object ###
         root = tk.Tk()
         root.title("PyVibVisualizer")
@@ -68,7 +148,7 @@ class simulator:
         graphFrame = ttk.Frame(root)
 
         ### inputFrame ###
-        inputData = visualizer(inputFrame,self)
+        inputData = visualizer(inputFrame,self, arrow_scale)
         inputFrame.pack()
 
         ### buttonFrame ###

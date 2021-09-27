@@ -9,7 +9,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from atom_data import data
 
 class visualizer(ttk.Frame):
-    def __init__(self, inputFrame, simulator):
+    def __init__(self, inputFrame, simulator, arrow_scale):
 
         self.freq = simulator.freq
         self.disp = simulator.disp
@@ -18,6 +18,7 @@ class visualizer(ttk.Frame):
         self.coord = simulator.coord
         self.atom = simulator.atom
         self.natom = len(self.geom)
+        self.scale = arrow_scale
 
 
         self.trgFunc = tk.StringVar()
@@ -45,11 +46,11 @@ class visualizer(ttk.Frame):
         z = np.linspace(bond[0][2], bond[1][2], 30)
         ax.plot(x,y,z,ms=2,linewidth=4, color='gray')
 
-    def plot_arrow(self, starts, vector, ax, scale= 10):
+    def plot_arrow(self, starts, vector, ax):
         star = np.array(starts).T
         vec = np.array(vector).reshape(self.natom,3).T
         for x,y,z,u,v,w in zip(*star, *vec):
-            norm = pow(u*u+v*v+w*w, 0.5)*scale
+            norm = pow(u*u+v*v+w*w, 0.5)*self.scale
             ax.quiver(x,y,z,u,v,w, pivot = 'tail', length = norm, linewidths=4, color='green')
 
 

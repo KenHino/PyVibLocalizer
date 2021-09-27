@@ -33,7 +33,7 @@ disp = [[-3.77832663e-05, -1.44206524e-01, -3.90016272e-02,
          -3.51978664e-01, -1.47389841e-01,  5.47263255e-01]]#'Bohr(mass(AMU) weighted)'
 
 
-
+#geom, freq, disp = read_minfo("minfo_sample/ch2o.minfo")
 
 sim = simulator(geom, freq, disp)
 
