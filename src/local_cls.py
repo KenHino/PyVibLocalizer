@@ -1,9 +1,10 @@
 import numpy as np
-from scipy.optimize import minimize
+from scipy.optimize import minimize, minimize_scalar
 import math
+import itertools
 
 class localizer:
-    def __init__(self, simu, option):
+    def __init__(self, simu, option, window):
         self.geom = simu.geom
         self.Q_mat = np.matrix(simu.disp).T
         self.R_mat =  np.array(simu.coord)
@@ -12,19 +13,23 @@ class localizer:
         self.option = option
         
         self.freq = simu.freq
+        self.window = window
+        self.unitary = np.eye(self.nmode)
         self.hamiltonian = np.diag(-np.power(np.array(self.freq),2))
 
 
-    def metric(self, Q_mat):
+    def metric(self, Q_mat, check_mode='ALL'):
+        if check_mode == 'ALL':
+            check_mode = [pmode for pmode in range(self.nmode)]
         if self.option == 'Pipek-Mezy':
             dum = 0.0
-            for pmode in range(self.nmode):
+            for pmode in check_mode:
                 for iatom in range(self.natom):
                     dum += np.sum(np.power(Q_mat[3*iatom:3*(iatom+1), pmode],2))**2
 
         elif self.option == 'Boys':
             dum = 0.0
-            for pmode in range(self.nmode):
+            for pmode in check_mode:
                 R_center = np.zeros(3)
                 for iatom in range(self.natom):
                     R_center += np.sum(np.power(Q_mat[3*iatom:3*(iatom+1), pmode],2))*self.R_mat[iatom]
@@ -40,7 +45,8 @@ class localizer:
             pmode = pair[0]
             qmode = pair[1]
             rotate_mat = np.eye(self.nmode)
-            rotate_mat[pmode][pmode] = rotate_mat[qmode][qmode] = np.cos(theta)
+            rotate_mat[pmode][pmode] = np.cos(theta)
+            rotate_mat[qmode][qmode] = np.cos(theta)
             rotate_mat[pmode][qmode] = np.sin(theta)
             rotate_mat[qmode][pmode] = - np.sin(theta)
             identity = np.dot(identity, rotate_mat)
@@ -48,31 +54,73 @@ class localizer:
 
 
     def run(self):
-
-        def objective(array):
+        def objective(theta, pmode, qmode):
             pair_theta = {}
-            for pmode in range(self.nmode-1):
-                pair_theta[(pmode, pmode+1)] = array[pmode]
+            pair_theta[(pmode, qmode)] = theta
             rotate_matrix = self.construct_unitary(pair_theta)
             Q_mat = np.dot(self.Q_mat, rotate_matrix)
-            return - self.metric(Q_mat)
+            return - self.metric(Q_mat, check_mode = [pmode, qmode])
 
-        result = minimize(objective, np.zeros(self.nmode-1))
-        print(result.message)
-        if not result.success:
-            assert False
+        max_iter = 100
+        pair_list = []
+        for pmode, qmode in itertools.combinations(range(self.nmode), 2):
+            if abs(self.freq[pmode] - self.freq[qmode]) < self.window:
+                pair_list.append((pmode,qmode))
+        pre_val = 0
+        tol = 1.e-05
+        met = self.metric(self.Q_mat)
+        print('initial zeta = ',met)
+        import random
+        for k in range(max_iter):
+            random.shuffle(pair_list)
+            for pmode, qmode in pair_list:
+                result = minimize_scalar(objective, bounds=(-np.pi, np.pi), args=(pmode,qmode))
+                pair_theta = {}
+                pair_theta[(pmode, qmode)] = result.x
+                rotate_matrix = self.construct_unitary(pair_theta)
+                self.Q_mat = np.dot(self.Q_mat, rotate_matrix)
+                self.unitary = np.dot(self.unitary, rotate_matrix)
+                met = self.metric(self.Q_mat)
+            print(k, 'zeta = ', met, 'delta =', abs(pre_val - met))
+            if abs(pre_val - met) < tol:
+                break
+            else:
+                pre_val = met
 
-        pair_theta = {}
-        for pmode in range(self.nmode-1):
-            pair_theta[(pmode, pmode+1)] = result.x[pmode]
 
-        rotate_matrix = self.construct_unitary(pair_theta)
+        #def objective(array):
+        #    pair_theta = {}
+        #    cnt = 0
+        #    #for pmode, qmode in itertools.combinations(range(self.nmode), 2):
+        #    for pmode in range(self.nmode-1):
+        #        #pair_theta[(pmode, qmode)] = array[cnt]
+        #        pair_theta[(pmode, pmode+1)] = array[pmode]
+        #        cnt += 1
+        #    rotate_matrix = self.construct_unitary(pair_theta)
+        #    Q_mat = np.dot(self.Q_mat, rotate_matrix)
+        #    return - self.metric(Q_mat)
 
-        self.Q_mat = np.dot(self.Q_mat, rotate_matrix)
+        #result = minimize(objective, np.zeros(self.nmode*(self.nmode-1)//2))
+        #result = minimize(objective, np.zeros(self.nmode-1))
+        #print(result.message)
+        #print(result.fun)
+        #if not result.success:
+        #    assert False
+
+        #pair_theta = {}
+        #cnt = 0
+        #for pmode, qmode in itertools.combinations(range(self.nmode), 2):
+        #for pmode in range(self.nmode-1):
+            #pair_theta[(pmode, qmode)] = result.x[cnt]
+            #pair_theta[(pmode, pmode+1)] = result.x[pmode]
+            #cnt += 1
+        #rotate_matrix = self.construct_unitary(pair_theta)
+
+        #self.Q_mat = np.dot(self.Q_mat, rotate_matrix)
 
         np.set_printoptions(formatter={'float': '{:>8.0f}'.format})
         print('\n','localized hessian [cm-2]')
-        hamiltonian = np.dot(np.dot(rotate_matrix,  self.hamiltonian), rotate_matrix.T)
+        hamiltonian = np.dot(np.dot(self.unitary,  self.hamiltonian), self.unitary.T)
         print(hamiltonian,'\n')
 
         return self.Q_mat, list(np.sqrt(-np.diag(hamiltonian)))

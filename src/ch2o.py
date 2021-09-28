@@ -39,6 +39,6 @@ sim = simulator(geom, freq, disp)
 
 #sim.visualize()
 #sim.localize(option='Boys')
-sim.localize(option='Pipek-Mezy')
+sim.localize(option='Pipek-Mezy', window=500)
 sim.visualize()
 

@@ -61,7 +61,7 @@ class visualizer(ttk.Frame):
         ax.set_box_aspect((1,1,1))
         ax.axis('off')
         for atom in self.geom:
-            self.plot_sphere(0.9,atom[1], data[atom[0]][2], ax)
+            self.plot_sphere(data[atom[0]][1]/2,atom[1], data[atom[0]][2], ax)
 
         for bond in self.bond:
             self.plot_bond(bond,ax)

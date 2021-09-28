@@ -170,8 +170,8 @@ class simulator:
         #continue
         root.mainloop()
 
-    def localize(self, *, option='Pipek-Mezy'):
-        loc = localizer(self, option)
+    def localize(self, *, option='Pipek-Mezy', window=400):
+        loc = localizer(self, option, window)
         self.Q_mat, self.freq = loc.run()
         for x in range(self.nmode):
             for y in range(self.natom*3):

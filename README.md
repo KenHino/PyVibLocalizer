@@ -10,7 +10,7 @@ J. Chem. Phys. 130, 084106 (2009); https://doi.org/10.1063/1.3077690
     $$\xi_{\mathrm{dist}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k}\left(\boldsymbol{R}_{p}^{\text {center }}\right)^{2}$$
     $$\boldsymbol{R}_{p}^{\text {center }}=\sum_{i=1}^{n} \tilde{C}_{i p}^{\mathrm{sub}} \boldsymbol{R}_{i}$$
 
-to maximize, metrices, this program used `scipy.optimized.miniimize`, not jacobi sweep method.
+To maximize, metrices, this program used `scipy.optimized.minimize_scalar`, in jacobi sweep method. The choice of unitary rotation mode pair is based on window frequency.: J. Chem. Phys. 145, 124112 (2016); https://doi.org/10.1063/1.4963109 Default window frequency set as 400 cm-1.
 
 
 - coordinate unit must be Bohr
