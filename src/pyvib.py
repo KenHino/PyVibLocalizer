@@ -118,7 +118,29 @@ def write_minfo(file_name, freq, disp):
     file.write(contents)
     file.close()
 
-class simulator:
+class Vibration:
+    """ Main Vibraion class
+
+    This class allows localization and visualization of vibrational modes.
+
+    Attributes:
+        unit (str) : Unit of displacement vector. Defaults to ``Bohr``.
+        freq (list(float)) : The list of frequencies in cm-1.
+        disp (list(list(float))) : The list of displacement vectors. \
+                ``disp[imode][iatom_xyz]`` gives displacement from refernce coordinates.
+        geom (list(list)) : Referenece geometry. ``geom[iatom][0]`` gives element symbol. \
+                ``geom[iatom][1]`` gives the refernce cartesian coordinate.
+        bond (list(list)) : The pair of atom coordinates which bonded each other.
+        nmode (int) : Number of modes.
+        natom (int) : Number of atoms.
+        Q_mat (numpy.ndarray) : Unitary matrix aligned displacement vectors.
+
+    Args:
+        geom (list(list)) : Referenece geometry.
+        freq (list(float)) : The list of frequencies in cm-1.
+        disp (list(list(float))) : The list of displacement vectors. 
+
+    """
     def __init__(self, geom, freq, disp, unit='Bohr'):
         self.unit = unit
         if unit != 'Bohr':
@@ -131,7 +153,7 @@ class simulator:
         self.bond = [[self.coord[i], self.coord[k]] for (i,k) in itertools.combinations(range(len(self.atom)), 2) \
                 if (data[self.atom[i]][1]+data[self.atom[k]][1]) + 0.15 > dist(self.coord[i], self.coord[k])]
 
-        
+
         self.nmode = len(self.disp)
         self.natom = len(self.geom)
 
@@ -139,6 +161,18 @@ class simulator:
 
 
     def visualize(self, arrow_scale = 10):
+        """Visualize vibrational modes.
+
+        Vibration mode visualization with Matplotlib and tinker.
+
+        Args:
+            arrow_scale (float) : The scale of displacement arrows. Defaults to ``10``.
+
+        Examples:
+            >>> sim = Vibration(geom, freq, disp)
+            >>> sim.visualize()
+
+        """
         ### root object ###
         root = tk.Tk()
         root.title("PyVibVisualizer")
@@ -171,6 +205,33 @@ class simulator:
         root.mainloop()
 
     def localize(self, *, option='Pipek-Mezy', window=400):
+        r"""Localize vibrational modes.
+
+        Vibration mode localization with local_cls module.
+
+        - Pipek-Mezy metric
+        .. math::
+
+            \xi_{\mathrm{at}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k} \sum_{i=1}^{n}\left(\tilde{C}_{i p}^{\mathrm{sub}}\right)^{2}
+            \\
+            \tilde{C}_{i p}^{\mathrm{sub}}=\sum_{\alpha=x, y, z}\left(\tilde{Q}_{i \alpha, p}^{\mathrm{sub}}\right)^{2}
+
+        - Boys metric
+        .. math::
+
+            \xi_{\mathrm{dist}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k}\left(\boldsymbol{R}_{p}^{\text {center }}\right)^{2}
+            \\
+            \boldsymbol{R}_{p}^{\text {center }}=\sum_{i=1}^{n} \tilde{C}_{i p}^{\mathrm{sub}} \boldsymbol{R}_{i}
+
+        Args:
+            option (str) : The metric of localization. ``Boys`` or ``Pipek-Mezy``.
+            window (float) : window frequency in cm-1.
+
+        Examples:
+            >>> sim = Vibration(geom, freq, disp)
+            >>> sim.localize()
+
+        """
         loc = localizer(self, option, window)
         self.Q_mat, self.freq = loc.run()
         for x in range(self.nmode):

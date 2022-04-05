@@ -1,4 +1,4 @@
-from pyvib import simulator, read_minfo #geometry, freq, displacement vector
+from pyvib import Vibration, read_minfo #geometry, freq, displacement vector
 
 geom = [['O',     [   1.13890361,      -0.00029065,      -0.00005828]],
         ['C',     [  -1.13628333,       0.00028780,       0.00005557]],
@@ -35,10 +35,10 @@ disp = [[-3.77832663e-05, -1.44206524e-01, -3.90016272e-02,
 
 #geom, freq, disp = read_minfo("minfo_sample/ch2o.minfo")
 
-sim = simulator(geom, freq, disp)
+sim = Vibration(geom, freq, disp)
 
 #sim.visualize()
 #sim.localize(option='Boys')
-sim.localize(option='Pipek-Mezy', window=500)
-sim.visualize()
+#sim.localize(option='Pipek-Mezy', window=500)
+#sim.visualize()
 
