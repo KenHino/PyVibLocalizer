@@ -1,18 +1,20 @@
 import numpy as np
 from scipy.optimize import minimize, minimize_scalar
+from scipy.linalg import eigh
 import math
 import itertools
+import units
 
-class localizer:
-    def __init__(self, simu, option, window):
-        self.geom = simu.geom
-        self.Q_mat = np.matrix(simu.disp).T
-        self.R_mat =  np.array(simu.coord)
-        self.nmode = len(simu.disp)
+class Localizer:
+    def __init__(self, vib, option, window):
+        self.geom = vib.geom
+        self.Q_mat = np.matrix(vib.disp).T
+        self.R_mat =  np.array(vib.coord)
+        self.nmode = len(vib.disp)
         self.natom = len(self.geom)
         self.option = option
         
-        self.freq = simu.freq
+        self.freq = vib.freq
         self.window = window
         self.unitary = np.eye(self.nmode)
         self.hamiltonian = np.diag(-np.power(np.array(self.freq),2))
@@ -35,7 +37,7 @@ class localizer:
                     R_center += np.sum(np.power(Q_mat[3*iatom:3*(iatom+1), pmode],2))*self.R_mat[iatom]
                 dum += np.linalg.norm(R_center, ord=2)
         else:
-            assert False
+            raise TypeError
 
         return dum
 
@@ -123,6 +125,24 @@ class localizer:
         hamiltonian = np.dot(np.dot(self.unitary,  self.hamiltonian), self.unitary.T)
         print(hamiltonian,'\n')
 
-        return self.Q_mat, list(np.sqrt(-np.diag(hamiltonian)))
+        return (self.Q_mat, list(np.sqrt(-np.diag(hamiltonian))))
 
+class GroupLocalizer:
+    def __init__(self, vib, mwhess, domains):
+        self.geom = vib.geom
+        self.nmode = len(mwhess)
+        self.natom = len(self.geom)
+        self.domains = domains
+        self.mwhess = mwhess
+    
+    def run(self):
+        self.unitary = np.zeros_like(self.mwhess)
+        for domain in self.domains:
+            fancy_indices = []
+            for iatom in domain:
+                fancy_indices.extend([3*iatom, 3*iatom+1, 3*iatom+2])
+            sub_hess = self.mwhess[np.ix_(fancy_indices,fancy_indices)]
+            _, v = eigh(sub_hess)
+            self.unitary[np.ix_(fancy_indices,fancy_indices)] = v
+        return (self.unitary, np.sqrt(np.diag(self.unitary.T@self.mwhess@self.unitary).tolist()))
 

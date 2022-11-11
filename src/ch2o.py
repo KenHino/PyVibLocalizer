@@ -5,8 +5,10 @@ geom = [['O',     [   1.13890361,      -0.00029065,      -0.00005828]],
         ['H',     [  -2.27284653,       0.46535179,      -1.72435469]],
         ['H',     [  -2.27284922,      -0.46416573,       1.72461804]]]#'Bohr'
 
+'''NOT dimensionless coordinate frequency'''
 freq = [ 1.18646597e+03,  1.25305305e+03,  1.51535414e+03,  1.83295234e+03,  2.86496842e+03, 2.91731717e+03] # cm-1
 
+'''Normalized mass-weighted displacement vector'''
 disp = [[-3.77832663e-05, -1.44206524e-01, -3.90016272e-02,
           1.37330386e-04,  4.99831945e-01,  1.34928755e-01,
           1.07701428e-04, -5.75125668e-01, -1.55109452e-01,
@@ -30,15 +32,21 @@ disp = [[-3.77832663e-05, -1.44206524e-01, -3.90016272e-02,
         [ 2.98490039e-06, -8.90723115e-04,  3.30468722e-03,
           7.19831690e-05,  8.64782849e-02, -3.20876399e-01,
           3.51718386e-01, -1.47466018e-01,  5.46796360e-01,
-         -3.51978664e-01, -1.47389841e-01,  5.47263255e-01]]#'Bohr(mass(AMU) weighted)'
+         -3.51978664e-01, -1.47389841e-01,  5.47263255e-01]]#'Bohr(mass(AMU???) weighted)'
 
 
 #geom, freq, disp = read_minfo("minfo_sample/ch2o.minfo")
 
-sim = Vibration(geom, freq, disp)
 
-#sim.visualize()
+#sim = Vibration(geom, freq, disp)
+
 #sim.localize(option='Boys')
 #sim.localize(option='Pipek-Mezy', window=500)
 #sim.visualize()
+import numpy as np
+sim = Vibration(geom)
+sim.group_localize(domain=[[0,1,2,3]], 
+mwhess=np.array(disp).T@np.diag(np.array(freq)**2)@np.array(disp), 
+unit_omega='cm-1', unit_mass='AMU')
 
+sim.visualize(atom_number=True)
