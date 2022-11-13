@@ -2,8 +2,12 @@ import itertools
 from collections import defaultdict, Counter
 import copy
 import math
-import tkinter as tk
-from tkinter import ttk
+try:
+    import tkinter as tk
+    from tkinter import ttk
+except:
+    import tk
+    from tk import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np

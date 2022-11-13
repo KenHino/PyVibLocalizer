@@ -1,7 +1,0 @@
-c4h6 module
-===========
-
-.. automodule:: c4h6
-   :members:
-   :undoc-members:
-   :show-inheritance:

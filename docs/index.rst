@@ -10,7 +10,8 @@ Hello, vibration!
    :maxdepth: 2
    :caption: Contents:
 
-   README.md
+   ./README.md
+   
    pyvib
    visual_cls
    local_cls
