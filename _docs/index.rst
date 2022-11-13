@@ -15,6 +15,8 @@ Hello, vibration!
    pyvib
    visual_cls
    local_cls
+   units
+   blender
 
 .. image:: pic/ch2o.png
   :width: 400

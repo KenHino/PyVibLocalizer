@@ -1,4 +1,7 @@
-import bpy
+try:
+    import bpy
+except ImportError:
+    print('You cannot use blender by import error')
 import numpy as np
 import math
 from typing import List, Tuple
