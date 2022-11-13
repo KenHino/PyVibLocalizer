@@ -24,7 +24,22 @@
 
             If WSL2 or Ubuntu,
             ```bash
-            $ sudo apt install blender
+            $ sudo apt install blender # If Mac OS brew install --cask blender
+            $ sudo apt install subversion # If Mac OS brew install svn
+            ```
+            If required,
+            ```bash
+            $ pip install future_fstrings
+            $ pip install bpy
+            ```
+            In your `.bashrc` files
+            ```
+            set PYTHONHOME=`which python3` # May be not not required
+            alias blender='blender --python-use-system-env'
+            ```
+            When you execute `main.py`
+            ```
+            blender --python main.py
             ```
 
         - [Atomic Simulation Environment](https://wiki.fysik.dtu.dk/ase/)
