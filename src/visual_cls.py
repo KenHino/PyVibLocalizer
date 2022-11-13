@@ -52,9 +52,9 @@ class Visualizer(ttk.Frame):
         z = np.linspace(bond[0][2] / units.ANGSTROM, bond[1][2] / units.ANGSTROM, 30)
         ax.plot(x, y, z, ms=2, linewidth=4, color='gray')
 
-    def plot_arrow(self, starts, vector, ax):
+    def plot_arrow(self, starts, vectors, ax):
         start = np.array(starts).T / units.ANGSTROM
-        vec = np.array(vector).reshape(self.natom, 3).T / units.ANGSTROM
+        vec = np.array(vectors).reshape(self.natom, 3).T / units.ANGSTROM
         for x,y,z,u,v,w in zip(*start, *vec):
             norm = pow(u*u + v*v + w*w, 0.5) * self.scale
             ax.quiver(x,y,z,u,v,w, pivot = 'tail', 

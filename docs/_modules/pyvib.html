@@ -72,12 +72,8 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">Counter</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
-    <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">tk</span>
-    <span class="kn">from</span> <span class="nn">tk</span> <span class="kn">import</span> <span class="n">ttk</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
 <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_tkagg</span> <span class="kn">import</span> <span class="n">FigureCanvasTkAgg</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -85,7 +81,6 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">mendeleev</span>
 
-<span class="kn">from</span> <span class="nn">visual_cls</span> <span class="kn">import</span> <span class="n">Visualizer</span>
 <span class="kn">from</span> <span class="nn">local_cls</span> <span class="kn">import</span> <span class="n">Localizer</span><span class="p">,</span> <span class="n">GroupLocalizer</span>
 <span class="kn">import</span> <span class="nn">units</span>
 
@@ -291,7 +286,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mendeleev</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">atomic_weight</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">DALTON</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">/=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mendeleev</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">atomic_weight</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">DALTON</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Vibration.visualize"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration.visualize">[docs]</a>    <span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrow_scale</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">blender</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">atom_number</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Vibration.visualize"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration.visualize">[docs]</a>    <span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrow_scale</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">blender</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">atom_number</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Visualize vibrational modes.</span>
 
 <span class="sd">        Vibration mode visualization with Matplotlib and tinker.</span>
@@ -306,40 +301,45 @@
 <span class="sd">            &gt;&gt;&gt; sim.visualize()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">blender</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blender</span> <span class="o">=</span> <span class="n">blender</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atom_number</span> <span class="o">=</span> <span class="n">atom_number</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blender</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">blender</span> <span class="kn">import</span> <span class="n">Visualizer</span>
+            <span class="n">vis</span> <span class="o">=</span> <span class="n">Visualizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="p">)</span>
+            <span class="n">vis</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-        <span class="c1">### root object ###</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
-        <span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;PyVibVisualizer&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">visual_cls</span> <span class="kn">import</span> <span class="n">Visualizer</span>
+            <span class="c1">### root object ###</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;PyVibVisualizer&quot;</span><span class="p">)</span>
 
-        <span class="n">inputFrame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
-        <span class="n">buttonFrame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
-        <span class="n">graphFrame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+            <span class="n">inputFrame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+            <span class="n">buttonFrame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+            <span class="n">graphFrame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 
-        <span class="c1">### inputFrame ###</span>
-        <span class="n">inputData</span> <span class="o">=</span> <span class="n">Visualizer</span><span class="p">(</span><span class="n">inputFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="p">)</span>
-        <span class="n">inputFrame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+            <span class="c1">### inputFrame ###</span>
+            <span class="n">inputData</span> <span class="o">=</span> <span class="n">Visualizer</span><span class="p">(</span><span class="n">inputFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="p">)</span>
+            <span class="n">inputFrame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
 
-        <span class="c1">### buttonFrame ###</span>
-        <span class="n">ButtonWidth</span> <span class="o">=</span> <span class="mi">10</span>
-        <span class="n">UpdateButton</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">buttonFrame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;View&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">ButtonWidth</span><span class="p">,</span> \
-            <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span><span class="n">inputData</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Canvas</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fig</span><span class="p">))</span>
-        <span class="n">UpdateButton</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">buttonFrame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+            <span class="c1">### buttonFrame ###</span>
+            <span class="n">ButtonWidth</span> <span class="o">=</span> <span class="mi">10</span>
+            <span class="n">UpdateButton</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">buttonFrame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;View&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">ButtonWidth</span><span class="p">,</span> \
+                <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span><span class="n">inputData</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Canvas</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fig</span><span class="p">))</span>
+            <span class="n">UpdateButton</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">buttonFrame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
 
-        <span class="c1">#graph initialize</span>
-        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-        <span class="n">Canvas</span> <span class="o">=</span> <span class="n">FigureCanvasTkAgg</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">master</span> <span class="o">=</span> <span class="n">graphFrame</span><span class="p">)</span>
-        <span class="n">Canvas</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
-        <span class="n">graphFrame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+            <span class="c1">#graph initialize</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+            <span class="n">Canvas</span> <span class="o">=</span> <span class="n">FigureCanvasTkAgg</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">master</span> <span class="o">=</span> <span class="n">graphFrame</span><span class="p">)</span>
+            <span class="n">Canvas</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+            <span class="n">graphFrame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
 
-        <span class="c1">#continue</span>
-        <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span></div>
+            <span class="c1">#continue</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Vibration.localize"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration.localize">[docs]</a>    <span class="k">def</span> <span class="nf">localize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="s1">&#39;Pipek-Mezy&#39;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">400</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Localize vibrational modes.</span>

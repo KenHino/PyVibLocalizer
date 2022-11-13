@@ -49,4 +49,4 @@ sim.group_localize(domain=[[0,1,2,3]],
 mwhess=np.array(disp).T@np.diag(np.array(freq)**2)@np.array(disp), 
 unit_omega='cm-1', unit_mass='AMU')
 
-sim.visualize(atom_number=True)
+sim.visualize(atom_number=True, blender=True)

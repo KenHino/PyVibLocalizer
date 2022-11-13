@@ -1,7 +1,7 @@
 # PyVibLocalizer
 ## visualize atomic mode and genetrate displacement vectors (normal/local mode, arbitary path)
 
-<img src="./docs/pic/ch2o.png" width="400">
+<img src="./_docs/pic/ch2o.png" width="400">
 
 - [Documentation](https://kenhino.github.io/PyVibLocalizer/index.html#)
 

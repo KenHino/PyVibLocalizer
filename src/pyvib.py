@@ -2,12 +2,8 @@ import itertools
 from collections import defaultdict, Counter
 import copy
 import math
-try:
-    import tkinter as tk
-    from tkinter import ttk
-except:
-    import tk
-    from tk import ttk
+import tkinter as tk
+from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,7 +11,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from typing import List, Dict, Optional, Tuple, Union
 import mendeleev
 
-from visual_cls import Visualizer
 from local_cls import Localizer, GroupLocalizer
 import units
 
@@ -221,7 +216,7 @@ class Vibration:
                 self.disp[-1][3*i+1] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
                 self.disp[-1][3*i+2] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
 
-    def visualize(self, arrow_scale = 10, blender=False, atom_number=False):
+    def visualize(self, arrow_scale = -3, blender=False, atom_number=False):
         """Visualize vibrational modes.
 
         Vibration mode visualization with Matplotlib and tinker.
@@ -236,40 +231,45 @@ class Vibration:
             >>> sim.visualize()
 
         """
-        if blender:
-            raise NotImplementedError
+        self.blender = blender
         self.atom_number = atom_number
+        if self.blender:
+            from blender import Visualizer
+            vis = Visualizer(self, arrow_scale)
+            vis.show()
 
-        ### root object ###
-        root = tk.Tk()
-        root.title("PyVibVisualizer")
+        else:
+            from visual_cls import Visualizer
+            ### root object ###
+            root = tk.Tk()
+            root.title("PyVibVisualizer")
 
-        inputFrame = ttk.Frame(root)
-        buttonFrame = ttk.Frame(root)
-        graphFrame = ttk.Frame(root)
+            inputFrame = ttk.Frame(root)
+            buttonFrame = ttk.Frame(root)
+            graphFrame = ttk.Frame(root)
 
-        ### inputFrame ###
-        inputData = Visualizer(inputFrame, self, arrow_scale)
-        inputFrame.pack()
+            ### inputFrame ###
+            inputData = Visualizer(inputFrame, self, arrow_scale)
+            inputFrame.pack()
 
-        ### buttonFrame ###
-        ButtonWidth = 10
-        UpdateButton = tk.Button(buttonFrame, text="View", width=ButtonWidth, \
-            command = lambda:inputData.plot(Canvas, ax, fig))
-        UpdateButton.grid(row = 0, column = 0)
-        buttonFrame.pack()
+            ### buttonFrame ###
+            ButtonWidth = 10
+            UpdateButton = tk.Button(buttonFrame, text="View", width=ButtonWidth, \
+                command = lambda:inputData.plot(Canvas, ax, fig))
+            UpdateButton.grid(row = 0, column = 0)
+            buttonFrame.pack()
 
-        #graph initialize
-        fig = plt.figure(figsize=(8,8))
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_box_aspect((1,1,1))
-        ax.axis('off')
-        Canvas = FigureCanvasTkAgg(fig, master = graphFrame)
-        Canvas.get_tk_widget().pack()
-        graphFrame.pack()
+            #graph initialize
+            fig = plt.figure(figsize=(8,8))
+            ax = fig.add_subplot(111, projection='3d')
+            ax.set_box_aspect((1,1,1))
+            ax.axis('off')
+            Canvas = FigureCanvasTkAgg(fig, master = graphFrame)
+            Canvas.get_tk_widget().pack()
+            graphFrame.pack()
 
-        #continue
-        root.mainloop()
+            #continue
+            root.mainloop()
 
     def localize(self, option='Pipek-Mezy', window=400):
         r"""Localize vibrational modes.
