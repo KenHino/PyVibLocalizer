@@ -3,10 +3,11 @@
 
 <img src="./docs/pic/ch2o.png" width="400">
 
-- Manual (Documentation)
+- [Documentation](https://kenhino.github.io/PyVibLocalizer/index.html#)
+
+- Installation
     ```bash
     $ git clone https://github.com/KenHino/PyVibLocalizer
-    $ open PyVibLocalizer/docs/_build/index.html
     ```
 
 - Requirements
