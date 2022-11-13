@@ -41,4 +41,3 @@ sim = Vibration(geom, freq, disp)
 #sim.localize(option='Boys')
 #sim.localize(option='Pipek-Mezy', window=500)
 #sim.visualize()
-

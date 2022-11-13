@@ -1,22 +1,23 @@
 import itertools
-from collections import defaultdict, Counter
 import math
 import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
+
 
 from atom_data import data
 from visual_cls import visualizer
 from local_cls import localizer
 
+
 def dist(A, B):
     dum = 0.0
-    for a,b in zip(A,B):
+    for a, b in zip(A, B):
         dum += (a-b)**2
     return math.sqrt(dum)
+
 
 def read_minfo(file_name, use_trans=False, use_rot=False):
     geom = []
@@ -66,7 +67,7 @@ def read_minfo(file_name, use_trans=False, use_rot=False):
                 read_geom = False
                 continue
             else:
-                line = line.replace(',','').replace('E','e')
+                line = line.replace(',', '').replace('E', 'e')
                 words = line.split()
                 if len(words) == 6:
                     geom.append([words[0], [float(w) for w in words[3:6]]])
@@ -76,14 +77,14 @@ def read_minfo(file_name, use_trans=False, use_rot=False):
 
         elif read_freq:
             if line[-2] == ' ':
-                line = line.replace(',','').replace('e','e')
+                line = line.replace(',', '').replace('e', 'e')
                 words = line.split()
                 freq.extend([float(w) for w in words])
                 continue
 
         elif read_disp:
             if line[-2] == ' ':
-                line = line.replace(',','').replace('e','e')
+                line = line.replace(',', '').replace('e', 'e')
                 words = line.split()
                 disp.extend([float(w) for w in words])
                 continue
@@ -91,6 +92,7 @@ def read_minfo(file_name, use_trans=False, use_rot=False):
     disp = [disp[3*natom*k:3*natom*(k+1)] for k in range(len(disp)//3//natom)]
 
     return geom, freq, disp
+
 
 def write_minfo(file_name, freq, disp):
     nmode = len(freq)
@@ -117,6 +119,7 @@ def write_minfo(file_name, freq, disp):
     file = open(file_name, 'w')
     file.write(contents)
     file.close()
+
 
 class Vibration:
     """ Main Vibraion class
