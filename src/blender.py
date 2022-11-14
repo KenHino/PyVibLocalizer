@@ -35,7 +35,8 @@ class Visualizer():
             ) -> Tuple[float, float, float]:
         v = vec2 - vec1
         r = np.linalg.norm(v)
-        v /= r
+        if abs(r) > 1.e-16:
+            v /= r
         theta = math.acos(v[2])
         if theta < 0:
             theta += 2*math.pi
@@ -57,60 +58,78 @@ class Visualizer():
         bpy.context.object.name = name
 
         mat = bpy.data.materials.new(element)
-        mat.diffuse_color = (color[0]/255, color[1]/255, color[2]/255, 0.9)
+        mat.diffuse_color = (color[0]/255, color[1]/255, color[2]/255, 0.95)
 
         atom = bpy.data.objects[name]
         atom.data.materials.append(mat)
         self.add_collection('molecule')
 
-    def plot_bond(self, bond):
-        vec1 = np.array(bond[0]) / units.ANGSTROM
-        vec2 = np.array(bond[1]) / units.ANGSTROM
-        r, theta, phi = self.angles(vec1, vec2)
-        bpy.ops.mesh.primitive_cylinder_add(location=tuple((vec1+vec2)/2), 
-                radius=0.1, vertices=128, depth=r, rotation=(0, theta, phi))
+        if False:#self.atom_number:
+            bpy.ops.object.text_add(location=[x,y,z])
+            ob = bpy.context.object
+            ob.data.body = f"{number}"
+            bpy.context.object.name = f"_{number}_{element}"
+            mat = bpy.data.materials.new('black')
+            mat.diffuse_color = (0, 0, 0, 1)
 
-        self.bond_number += 1
-        name = f'bond_{self.bond_number}'
-        bpy.context.object.name = name
+            atom = bpy.data.objects[f"_{number}_{element}"]
+            atom.data.materials.append(mat)
+            self.add_collection('molecule')
 
+    def plot_bonds(self, bonds):
         mat = bpy.data.materials.new('bond')
         mat.diffuse_color = (1, 1, 1, 1)
+        for bond in bonds:
+            vec1 = np.array(bond[0]) / units.ANGSTROM
+            vec2 = np.array(bond[1]) / units.ANGSTROM
+            r, theta, phi = self.angles(vec1, vec2)
+            bpy.ops.mesh.primitive_cylinder_add(location=tuple((vec1+vec2)/2), 
+                    radius=0.1, vertices=128, depth=r, rotation=(0, theta, phi))
 
-        bond = bpy.data.objects[name]
-        bond.data.materials.append(mat)
-        self.add_collection('bonds')
+            self.bond_number += 1
+            name = f'bond_{self.bond_number}'
+            bpy.context.object.name = name
+
+            #_bond = bpy.data.objects[name]
+            #_bond.data.materials.append(mat)
+            self.add_collection('bonds')
+        self.join_object('bonds')
+        bpy.context.object.name = '_bonds'
+        _bonds = bpy.data.objects['_bonds']
+        _bonds.data.materials.append(mat)
+        
 
     def plot_arrow(self, starts, vectors, name, scale=1.0):
         starts = np.array(starts) / units.ANGSTROM
         vectors = np.array(vectors).reshape(self.natom, 3) / units.ANGSTROM
+        mat = bpy.data.materials.new('vec')
+        mat.diffuse_color = (0, 1, 0, 1)
         for start, vector in zip(starts, vectors):
             vec1 = np.array(start)
             vec2 = vec1 + np.array(vector)*scale
             r, theta, phi = self.angles(vec1, vec2)
-
             self.number += 1
+            if abs(r) < 1.e-16:
+                continue
 
             bpy.ops.mesh.primitive_cylinder_add(location=tuple((vec1+vec2)/2), 
-                    radius=0.15, vertices=128, depth=r, rotation=(0, theta, phi))
+                    radius=0.10, vertices=128, depth=r, rotation=(0, theta, phi))
             name_bar = f'{name}_{self.number}_bar'
             bpy.context.object.name = name_bar
 
-            mat = bpy.data.materials.new('vec')
-            mat.diffuse_color = (0, 1, 0, 1)
-
-            bar = bpy.data.objects[name_bar]
-            bar.data.materials.append(mat)
             self.add_collection(name)
             bpy.ops.mesh.primitive_cone_add(location=tuple(vec2), 
-                radius1=0.30, vertices=128, depth=0.3, rotation=(0, theta, phi))
+                radius1=0.25, vertices=128, depth=0.3, rotation=(0, theta, phi))
 
             name_cone = f'{name}_{self.number}_cone'
             bpy.context.object.name = name_cone
 
-            cone = bpy.data.objects[name_cone]
-            cone.data.materials.append(mat)
             self.add_collection(name)
+        self.join_object(name)
+        bpy.context.object.name = f'mode_{name}'
+        obj = bpy.data.objects[f'mode_{name}']
+        obj.data.materials.append(mat)
+
         self.exclude_collection(name)
 
     def add_collection(self, name: str):
@@ -122,17 +141,24 @@ class Visualizer():
             scene_collection.children.link(collection)
         obj = bpy.context.active_object
         collection.objects.link(obj)
-
         collection = bpy.data.collections['Collection'].objects.unlink(obj)
 
     def exclude_collection(self, name: str):
         bpy.context.view_layer.layer_collection.children[name].exclude = True
 
+    def join_object(self, name: str):
+        bpy.ops.object.select_all(action='DESELECT')
+        coll = bpy.data.collections[name]
+        for obj in coll.objects:
+            if obj.type == 'MESH':
+               obj.select_set(True)
+        bpy.ops.object.join()
+        bpy.ops.object.select_all(action='DESELECT')
+
     def show(self):
         for i, atom in enumerate(self.geom):
             self.plot_atom(element=atom[0], xyz=atom[1], number=i)
-        for bond in self.bond:
-            self.plot_bond(bond)
+        self.plot_bonds(self.bond)
 
         for i, f in enumerate(self.freq):
             if math.isnan(f):

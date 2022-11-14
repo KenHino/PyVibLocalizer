@@ -45,8 +45,7 @@ disp = [[-3.77832663e-05, -1.44206524e-01, -3.90016272e-02,
 #sim.visualize()
 import numpy as np
 sim = Vibration(geom)
-sim.group_localize(domain=[[0,1,2,3]], 
+sim.group_localize(domain=[[0,1],[2,3]], 
 mwhess=np.array(disp).T@np.diag(np.array(freq)**2)@np.array(disp), 
 unit_omega='cm-1', unit_mass='AMU')
-
 sim.visualize(atom_number=True, blender=True)
