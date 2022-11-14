@@ -1,15 +1,14 @@
+import itertools
 import numpy as np
 from scipy.optimize import minimize, minimize_scalar
 from scipy.linalg import eigh
-import math
-import itertools
-import units
+from typing import List, Optional
 
 class Localizer:
-    def __init__(self, vib, option, window):
+    def __init__(self, vib, option: str, window: float):
         self.geom = vib.geom
         self.Q_mat = np.matrix(vib.disp).T
-        self.R_mat =  np.array(vib.coord)
+        self.R_mat = np.array(vib.coord)
         self.nmode = len(vib.disp)
         self.natom = len(self.geom)
         self.option = option
@@ -17,24 +16,25 @@ class Localizer:
         self.freq = vib.freq
         self.window = window
         self.unitary = np.eye(self.nmode)
-        self.hamiltonian = np.diag(-np.power(np.array(self.freq),2))
+        self.hess = np.diag(np.power(np.array(self.freq), 2))
 
-
-    def metric(self, Q_mat, check_mode='ALL'):
-        if check_mode == 'ALL':
+    def metric(self, Q_mat: np.ndarray, check_mode: Optional[List[float]] ='all'):
+        if check_mode == 'all':
             check_mode = [pmode for pmode in range(self.nmode)]
-        if self.option == 'Pipek-Mezy':
+        if self.option.lower() == 'pipek-mezey':
             dum = 0.0
             for pmode in check_mode:
                 for iatom in range(self.natom):
-                    dum += np.sum(np.power(Q_mat[3*iatom:3*(iatom+1), pmode],2))**2
+                    dum += np.sum(np.power(
+                        Q_mat[3*iatom:3*(iatom+1), pmode], 2))**2
 
-        elif self.option == 'Boys':
+        elif self.option.lower() == 'boys':
             dum = 0.0
             for pmode in check_mode:
                 R_center = np.zeros(3)
                 for iatom in range(self.natom):
-                    R_center += np.sum(np.power(Q_mat[3*iatom:3*(iatom+1), pmode],2))*self.R_mat[iatom]
+                    R_center += np.sum(np.power(
+                        Q_mat[3*iatom:3*(iatom+1), pmode], 2))*self.R_mat[iatom]
                 dum += np.linalg.norm(R_center, ord=2)
         else:
             raise TypeError
@@ -54,29 +54,29 @@ class Localizer:
             identity = np.dot(identity, rotate_mat)
         return identity
 
-
     def run(self):
         def objective(theta, pmode, qmode):
             pair_theta = {}
             pair_theta[(pmode, qmode)] = theta
             rotate_matrix = self.construct_unitary(pair_theta)
             Q_mat = np.dot(self.Q_mat, rotate_matrix)
-            return - self.metric(Q_mat, check_mode = [pmode, qmode])
+            return - self.metric(Q_mat, check_mode=[pmode, qmode])
 
         max_iter = 100
         pair_list = []
         for pmode, qmode in itertools.combinations(range(self.nmode), 2):
             if abs(self.freq[pmode] - self.freq[qmode]) < self.window:
-                pair_list.append((pmode,qmode))
+                pair_list.append((pmode, qmode))
         pre_val = 0
         tol = 1.e-05
         met = self.metric(self.Q_mat)
-        print('initial zeta = ',met)
+        print('initial zeta = ', met)
         import random
         for k in range(max_iter):
             random.shuffle(pair_list)
             for pmode, qmode in pair_list:
-                result = minimize_scalar(objective, bounds=(-np.pi, np.pi), args=(pmode,qmode))
+                result = minimize_scalar(objective, bounds=(-np.pi, np.pi), 
+                        args=(pmode, qmode))
                 pair_theta = {}
                 pair_theta[(pmode, qmode)] = result.x
                 rotate_matrix = self.construct_unitary(pair_theta)
@@ -121,28 +121,30 @@ class Localizer:
         #self.Q_mat = np.dot(self.Q_mat, rotate_matrix)
 
         np.set_printoptions(formatter={'float': '{:>8.0f}'.format})
-        print('\n','localized hessian [cm-2]')
-        hamiltonian = np.dot(np.dot(self.unitary,  self.hamiltonian), self.unitary.T)
-        print(hamiltonian,'\n')
+        print('\n', 'localized hessian [cm-2]')
+        hess = np.dot(np.dot(
+            self.unitary,  self.hess), self.unitary.T)
+        print(hess, '\n')
 
-        return (self.Q_mat, list(np.sqrt(-np.diag(hamiltonian))))
+        return (self.Q_mat, list(np.sqrt(np.diag(hess))))
 
 class GroupLocalizer:
-    def __init__(self, vib, mwhess, domains):
+    def __init__(self, vib, mw_hess: np.ndarray, domains: List[List[float]]):
         self.geom = vib.geom
-        self.nmode = len(mwhess)
+        self.nmode = len(mw_hess)
         self.natom = len(self.geom)
         self.domains = domains
-        self.mwhess = mwhess
-    
+        self.mw_hess = mw_hess
+
     def run(self):
-        self.unitary = np.zeros_like(self.mwhess)
+        self.unitary = np.zeros_like(self.mw_hess)
         for domain in self.domains:
             fancy_indices = []
             for iatom in domain:
                 fancy_indices.extend([3*iatom, 3*iatom+1, 3*iatom+2])
-            sub_hess = self.mwhess[np.ix_(fancy_indices,fancy_indices)]
+            sub_hess = self.mw_hess[np.ix_(fancy_indices, fancy_indices)]
             _, v = eigh(sub_hess)
-            self.unitary[np.ix_(fancy_indices,fancy_indices)] = v
-        return (self.unitary, np.sqrt(np.diag(self.unitary.T@self.mwhess@self.unitary).tolist()))
+            self.unitary[np.ix_(fancy_indices, fancy_indices)] = v
 
+        return (self.unitary, 
+                np.sqrt(np.diag(self.unitary.T@self.mw_hess@self.unitary).tolist()))

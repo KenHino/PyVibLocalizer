@@ -5,7 +5,6 @@ src
    :maxdepth: 4
 
    blender
-   c4h6
    c6h8
    ch2o
    local_cls

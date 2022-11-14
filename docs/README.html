@@ -16,7 +16,8 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -43,7 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">PyVibLocalizer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#visualize-atomic-mode-and-genetrate-displacement-vectors-normal-local-mode-arbitary-path">visualize atomic mode and genetrate displacement vectors (normal/local mode, arbitary path)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-mode">Local mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#group-localized-coordinate">Group Localized Coordinate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
@@ -52,6 +53,8 @@
 <li class="toctree-l1"><a class="reference internal" href="pyvib.html">pyvib module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visual_cls.html">visual_cls module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="local_cls.html">local_cls module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">units module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blender.html">blender module</a></li>
 </ul>
 
         </div>
@@ -78,18 +81,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="pyviblocalizer">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section class="tex2jax_ignore mathjax_ignore" id="pyviblocalizer">
 <h1>PyVibLocalizer<a class="headerlink" href="#pyviblocalizer" title="Permalink to this heading"></a></h1>
-<section id="visualize-atomic-mode-and-genetrate-displacement-vectors-normal-local-mode-arbitary-path">
-<h2>visualize atomic mode and genetrate displacement vectors (normal/local mode, arbitary path)<a class="headerlink" href="#visualize-atomic-mode-and-genetrate-displacement-vectors-normal-local-mode-arbitary-path" title="Permalink to this heading"></a></h2>
+<p><strong>visualize atomic mode and genetrate displacement vectors (normal/local mode, arbitary path)</strong></p>
 <img src="./_docs/pic/ch2o.png" width="400">
-<ul>
+<ul class="simple">
 <li><p><a class="reference external" href="https://kenhino.github.io/PyVibLocalizer/index.html#">Documentation</a></p></li>
-<li><p>Installation</p>
+</ul>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/KenHino/PyVibLocalizer
 </pre></div>
 </div>
-</li>
+<ul>
 <li><p>Requirements</p>
 <ul>
 <li><p>must</p>
@@ -106,12 +134,6 @@
 <li><p><a class="reference external" href="https://www.blender.org/">Blender</a></p>
 <p>If WSL2 or Ubuntu,</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo apt install blender <span class="c1"># If Mac OS brew install --cask blender</span>
-$ sudo apt install subversion <span class="c1"># If Mac OS brew install svn</span>
-</pre></div>
-</div>
-<p>If required,</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install future_fstrings
-$ pip install bpy
 </pre></div>
 </div>
 <p>In your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> files</p>
@@ -121,6 +143,18 @@ alias blender=&#39;blender --python-use-system-env&#39;
 </div>
 <p>When you execute <code class="docutils literal notranslate"><span class="pre">main.py</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blender</span> <span class="o">--</span><span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>If you use Jupyter Notebook</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install blender-notebook
+$ blender_notebook install --blender-exec<span class="o">=</span><span class="s2">&quot;/usr/bin/blender&quot;</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">/usr/bin/blender</span></code> is your blender installed PATH.
+If required,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo apt install subversion <span class="c1"># If Mac OS brew install svn</span>
+$ pip install future_fstrings
+$ pip install bpy
 </pre></div>
 </div>
 </li>

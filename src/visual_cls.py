@@ -53,11 +53,11 @@ class Visualizer(ttk.Frame):
         ax.plot(x, y, z, ms=2, linewidth=4, color='gray')
 
     def plot_arrow(self, starts, vectors, ax):
-        start = np.array(starts).T / units.ANGSTROM
-        vec = np.array(vectors).reshape(self.natom, 3).T / units.ANGSTROM
-        for x,y,z,u,v,w in zip(*start, *vec):
-            norm = pow(u*u + v*v + w*w, 0.5) * self.scale
-            ax.quiver(x,y,z,u,v,w, pivot = 'tail', 
+        start = np.array(starts) / units.ANGSTROM
+        vec = np.array(vectors).reshape(self.natom, 3) / units.ANGSTROM
+        for xyz, uvw in zip(start, vec):
+            norm = np.linalg.norm(uvw) * self.scale
+            ax.quiver(*xyz,*uvw, pivot = 'tail', 
                 length = norm, linewidths=4, color='green')
     
     def plot_number(self, number, coord, ax):
@@ -79,7 +79,7 @@ class Visualizer(ttk.Frame):
             self.plot_bond(bond, ax)
 
         index = int(self.ComboboxTrgFunc.get().split()[0]) - 1
-        self.plot_arrow([coord[1] for coord in self.geom], self.disp[index], ax)
+        self.plot_arrow(self.coord, self.disp[index], ax)
         
         margin = 0.5
         maximum = -1.e10

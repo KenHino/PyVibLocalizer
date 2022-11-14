@@ -1,28 +1,28 @@
-import itertools
 from collections import defaultdict, Counter
 import copy
+import itertools
 import math
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import mendeleev
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 import tkinter as tk
 from tkinter import ttk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
-import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
 from typing import List, Dict, Optional, Tuple, Union
-import mendeleev
 
 from local_cls import Localizer, GroupLocalizer
 import units
 
+def dist(A: List[float], B: List[float]):
+    vecA = np.array(A)
+    vecB = np.array(B)
+    return np.linalg.norm(vecA - vecB)
 
-def dist(A, B):
-    dum = 0.0
-    for a, b in zip(A, B):
-        dum += (a-b)**2
-    return math.sqrt(dum)
-
-
-def read_minfo(file_name, use_trans=False, use_rot=False):
+def read_minfo(file_name: str, use_trans: Optional[bool] =False,
+        use_rot: Optional[bool] =False
+        ) -> Tuple[List[Union[str, Tuple[float, float, float]]],
+                List[float], List[List[float]]]:
     geom = []
     freq = []
     disp = []
@@ -94,10 +94,9 @@ def read_minfo(file_name, use_trans=False, use_rot=False):
 
     disp = [disp[3*natom*k:3*natom*(k+1)] for k in range(len(disp)//3//natom)]
 
-    return geom, freq, disp
+    return (geom, freq, disp)
 
-
-def write_minfo(file_name, freq, disp):
+def write_minfo(file_name: str, freq: List[float], disp: List[List[float]]):
     nmode = len(freq)
     contents = 'Vibrational Frequency\n'
     contents += str(nmode) + '\n'
@@ -123,6 +122,102 @@ def write_minfo(file_name, freq, disp):
     file.write(contents)
     file.close()
 
+def read_fchk_g16(file_path : str
+    ) -> Tuple[str, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Read Hessian in `.fchk` files from Gaussian16.
+
+    Args:
+        file_path (str) : Path to ``fchk`` file.
+        use_trans (bool) : Use translational vector. Defaults to ``False``.
+        use_rot (bool) : Use rotatinal vector. Defaults to ``False``.
+
+    Returns:
+        Tuple : multiple contents listed below.
+
+    Return contents:
+        - list(str) : atoms
+        - numpy.ndarray : mass in AMU.
+        - numpy.ndarray : coordinate in a.u. \
+                Shape is ``(natom, 3)`` , where ``natom = len(atoms)``.
+        - numpy.ndarray : frequency in cm-1. Shape is ``(ndof, )``, \
+                where ``ndof`` = ``3*natom-6`` or ``3*natom-5``.\
+                ``Nan`` represents imaginary frequency.
+        - numpy.ndarray : displacement vectors in a.u. .\
+                Shape is ``(ndof, natom, 3)``. Not mass weighted and normalized !!
+
+    """
+    from mendeleev import element
+    atom = []
+    d1_hess_cartesian = []
+    mass = []
+    geom = []
+
+    atom_flag = False
+    geom_flag = False
+    hessian_flag = False
+    mass_flag = False
+
+    file = open(file_path,"r")
+    lines = file.readlines()
+    file.close()
+    for i, line in enumerate(lines):
+        if line.startswith('Cartesian Force Constants'):
+            hessian_flag=True
+            continue
+        elif line.startswith('Vib-AtMass'):
+            mass_flag = True
+            continue
+        elif line.startswith('Opt point       1 Geometries'):
+            geom_flag = True
+            continue
+        elif line.startswith('Atomic numbers'):
+            atom_flag = True
+            continue
+
+        if hessian_flag | mass_flag | geom_flag | atom_flag:
+            if line[-5] != 'E' and not atom_flag:
+                hessian_flag = False
+                mass_flag = False
+                geom_flag = False
+                continue
+            if line.startswith('Nuclear charges'):
+                atom_flag = False
+                continue
+
+            if hessian_flag:
+                d1_hess_cartesian.extend(list(map(float, line.split())))
+            elif mass_flag:
+                mass.extend(list(map(float, line.split())))
+            elif geom_flag:
+                geom.extend(list(map(float, line.split())))
+            elif atom_flag:
+                atomic_num = list(map(int, line.split()))
+                atom.extend([element(n).symbol for n in atomic_num])
+
+
+    def to_symmetric(v,size):
+        out = np.zeros((size, size), v.dtype)
+        out[np.tri(size, dtype=bool)] = v
+        return out.T + out - np.diag(np.diag(out))
+
+    natom = len(atom)
+    geom = np.array(geom).reshape(natom, 3)
+    hess_cartesian = to_symmetric(np.array(d1_hess_cartesian), natom*3)
+    mass = np.array(mass)
+    trans_mass_weighted = 1 / np.sqrt(np.repeat(mass * const.au_in_dalton, 3)).reshape(-1,1)
+    mass_weighted_hessian = np.multiply(hess_cartesian, trans_mass_weighted@trans_mass_weighted.T)
+
+    E, V = scipy.linalg.eigh(mass_weighted_hessian)
+    freq = np.sqrt(E) * const.au_in_cm1
+
+    ndof = V.shape[0]
+    disp_mwc = np.array(V.T).reshape(ndof, natom, 3)
+    disp = np.zeros_like(disp_mwc)
+    for iatom in range(natom):
+        disp[:,iatom, :] = disp_mwc[:,iatom,:] / np.sqrt(mass[iatom])
+
+    return (atom, mass, geom, freq, disp)
 
 class Vibration:
     """ Main Vibraion class
@@ -131,9 +226,10 @@ class Vibration:
 
     Attributes:
         unit (str) : Unit of displacement vector. Defaults to ``Bohr``.
-        freq (List(float)) : The list of frequencies in cm-1.
-        disp (List[List[float]]) : The list of displacement vectors. \
+        freq (Optional, List(float)) : The list of frequencies in cm-1.
+        mw_disp (Optional, List[List[float]]) : The list of mass-weighted displacement vectors. \
                 ``disp[imode][iatom_xyz]`` gives displacement from refernce coordinates.
+        mw_hess (Optional, np.ndarray) : mass-weighted hessian
         geom (List[List[str, Tuple[float,flotat,float]]]) : Referenece geometry. \
             ``geom[iatom][0]`` gives element symbol. \
             ``geom[iatom][1]`` gives the refernce cartesian coordinate.
@@ -150,73 +246,77 @@ class Vibration:
         disp (List[List[float]]) : The list of displacement vectors. \
                 ``disp[imode][iatom_xyz]`` gives displacement from refernce coordinates.
     """
-    def __init__(self, 
-        geom : List[List[Union[str, Tuple[float,float,float]]]], 
-        freq : List[float] =None, 
-        disp_mw : List[List[float]] =None, 
-        unit_xyz : Optional[str] ='Bohr', 
-        unit_freq : Optional[str] ='cm1', 
-        unit_mass : Optional[str] ='AMU'):
-        if disp_mw is None:
-            disp_mw = [[0.0 for _ in range(len(geom)*3)]]
+    def __init__(self,
+        geom: List[List[Union[str, Tuple[float,float,float]]]],
+        freq: Optional[List[float]] =None,
+        mw_disp: Optional[List[List[float]]] =None,
+        mw_hess: Optional[np.ndarray] =None,
+        unit_xyz: Optional[str] ='Bohr',
+        unit_xyz_hess: Optional[str] ='Bohr',
+        unit_omega: Optional[str] ='Hartree',
+        unit_mass: Optional[str] ='a.u.'):
+
+        if mw_disp is None:
+            mw_disp = [[0.0 for _ in range(len(geom)*3)]]
             freq = [-1.0]
         else:
-            assert len(freq) == len(disp_mw)
+            assert len(freq) == len(mw_disp)
 
         if unit_xyz.lower() in ['bohr', 'au', 'a.u.']:
             pass
         elif unit_xyz.lower() in ['angstrom']:
             geom = [[g[0], (np.array(g[1]) * units.ANGSTROM).tolist()] for g in geom]
-            disp_mw = [(np.array(d) * units.ANGSTROM).tolist() for d in disp_mw]
+            mw_disp = (np.array(mw_disp) * units.ANGSTROM).tolist()
         else:
             raise NotImplementedError
-        
-        if unit_freq.lower() in ['cm1', 'cm', 'cm-1', 'kayser']:
+
+        if unit_omega.lower() in ['cm1', 'cm', 'cm-1', 'kayser']:
             freq = (np.array(freq) * units.CM1).tolist()
-        elif unit_freq.lower() in ['ev']:
+        elif unit_omega.lower() in ['ev']:
             freq = (np.array(freq) * units.EV).tolist()
-        elif unit_freq.lower() in ['au', 'a.u.', 'hartree']:
+        elif unit_omega.lower() in ['au', 'a.u.', 'hartree']:
             pass
         else:
             raise NotImplementedError
-        
+
         if unit_mass.lower() in ['amu', 'dalton']:
-            disp_mw = [(np.array(d) * math.sqrt(units.DALTON)).tolist() for d in disp_mw]
+            mw_disp = [(np.array(d) * math.sqrt(units.DALTON)).tolist() for d in mw_disp]
         elif unit_mass.lower() in ['a.u.', 'au', 'emu']:
             pass
         else:
             raise NotImplementedError
 
         self.freq = freq
-        self.disp_mw = disp_mw
+        self.mw_disp = mw_disp
 
         self.geom = geom
         self.atom = [a[0] for a in geom]
         self.coord = [c[1] for c in geom]
         self.bond = [[self.coord[i], self.coord[k]] for (i,k) in itertools.combinations(range(len(self.atom)), 2) \
                 if (mendeleev.element(self.atom[i]).covalent_radius_pyykko +
-                mendeleev.element(self.atom[k]).covalent_radius_pyykko)*1.0e-02 + 0.1> 
+                mendeleev.element(self.atom[k]).covalent_radius_pyykko)*1.0e-02 + 0.1>
                 dist(self.coord[i], self.coord[k]) / units.ANGSTROM]
-        
-        self.set_disp()
 
-        self.nmode = len(self.disp_mw)
         self.natom = len(self.geom)
 
         self.set_disp()
 
         self.Q_mat = np.matrix(self.disp).T
-    
-    def set_disp(self):
-        self.disp = []
-        for d in self.disp_mw:
-            self.disp.append(copy.deepcopy(d))
-            for i, a in enumerate(self.atom):
-                self.disp[-1][3*i] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
-                self.disp[-1][3*i+1] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
-                self.disp[-1][3*i+2] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
 
-    def visualize(self, arrow_scale = -3, blender=False, atom_number=False):
+        if mw_hess is not None:
+            self.diagonalize(mw_hess=mw_hess,
+            unit_xyz=unit_xyz_hess, unit_mass=unit_mass, unit_omega=unit_omega)
+
+        self.nmode = len(self.mw_disp)
+
+    def set_disp(self):
+        disp = np.array(self.mw_disp)
+        for i, a in enumerate(self.atom):
+            disp[:, 3*i:3*i+3] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON) 
+        self.disp = disp.tolist()
+
+    def visualize(self, arrow_scale: Optional[float]=-3,
+            blender: Optional[bool] =False, atom_number: Optional[bool]=False):
         """Visualize vibrational modes.
 
         Vibration mode visualization with Matplotlib and tinker.
@@ -255,7 +355,7 @@ class Vibration:
             ### buttonFrame ###
             ButtonWidth = 10
             UpdateButton = tk.Button(buttonFrame, text="View", width=ButtonWidth, \
-                command = lambda:inputData.plot(Canvas, ax, fig))
+                command = lambda : inputData.plot(Canvas, ax, fig))
             UpdateButton.grid(row = 0, column = 0)
             buttonFrame.pack()
 
@@ -271,12 +371,13 @@ class Vibration:
             #continue
             root.mainloop()
 
-    def localize(self, option='Pipek-Mezy', window=400):
+    def localize(self, option: Optional[str] ='Pipek-Mezey',
+            window :Optional[float]=400):
         r"""Localize vibrational modes.
 
         Vibration mode localization with local_cls module.
 
-        - Pipek-Mezy metric
+        - Pipek-Mezey metric
         .. math::
 
             \xi_{\mathrm{at}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k} \sum_{i=1}^{n}\left(\tilde{C}_{i p}^{\mathrm{sub}}\right)^{2}
@@ -291,7 +392,7 @@ class Vibration:
             \boldsymbol{R}_{p}^{\text {center }}=\sum_{i=1}^{n} \tilde{C}_{i p}^{\mathrm{sub}} \boldsymbol{R}_{i}
 
         Args:
-            option (str) : The metric of localization. ``Boys`` or ``Pipek-Mezy``.
+            option (str) : The metric of localization. ``Boys`` or ``Pipek-Mezey``.
             window (float) : window frequency in cm-1.
 
         Examples:
@@ -307,44 +408,57 @@ class Vibration:
 
         print(option,'metric = ',loc.metric(self.Q_mat))
 
-    def group_localize(self, mwhess : np.ndarray, 
-        domain : List[List[float]],
-        unit_xyz : Optional[str] ='au', 
-        unit_omega : Optional[str] ='au',
-        unit_mass : Optional[str] ='au'
+    def diagonalize(self,
+        mw_hess: np.ndarray,
+        unit_xyz: Optional[str] ='au',
+        unit_omega: Optional[str] ='au',
+        unit_mass: Optional[str] ='au'
+        ) -> Tuple[List[List[float]], List[float]]:
+        mw_disp, freq = self.group_localize(mw_hess, domain=[[k for k in range(self.natom)]], 
+                                            unit_xyz=unit_xyz, unit_omega=unit_omega, unit_mass=unit_mass)
+        self.freq = freq[6:]
+        self.mw_disp = mw_disp[6:]
+        return (self.mw_disp, self.freq)
+
+    def group_localize(self,
+        mw_hess: np.ndarray,
+        domain: List[List[float]],
+        unit_xyz: Optional[str] ='au',
+        unit_omega: Optional[str] ='au',
+        unit_mass: Optional[str] ='au'
         ) -> Tuple[List[List[float]], List[float]]:
         """Generate Group Localized Coordinate from mass-weighted hessian
-        
+
         Args:
             mwhess (np.ndarray) : mass-weighted hessian
             domain (List[List[float]]): atomic domain such as [[0,1,2],[3,4]]
         """
-        
+
         if unit_omega.lower() in ['cm1', 'cm', 'cm-1', 'kayser']:
-            mwhess *= units.CM1**2
+            mw_hess *= units.CM1**2
         elif unit_omega.lower() in ['ev']:
-            mwhess *= units.EV**2
+            mw_hess *= units.EV**2
         elif unit_omega.lower() in ['au', 'a.u.', 'hartree']:
             pass
         else:
             raise NotImplementedError
-        
-        loc = GroupLocalizer(self, mwhess, domain)
+
+        loc = GroupLocalizer(self, mw_hess, domain)
         self.Q_mat, self.freq = loc.run()
-        
+
         if unit_xyz.lower() in ['bohr', 'au', 'a.u.']:
             pass
         elif unit_xyz.lower() in ['angstrom']:
             self.Q_mat *= units.ANGSTROM
         else:
             raise NotImplementedError
-        
+
         if unit_mass.lower() in ['amu', 'dalton']:
             self.Q_mat *= math.sqrt(units.DALTON)
         elif unit_mass.lower() in ['a.u.', 'au', 'emu']:
             pass
         else:
             raise NotImplementedError
-        self.disp_mw = self.Q_mat.T.tolist()
+        self.mw_disp = self.Q_mat.T.tolist()
         self.set_disp()
-        return (self.disp_mw, self.freq)
+        return (self.mw_disp, self.freq)

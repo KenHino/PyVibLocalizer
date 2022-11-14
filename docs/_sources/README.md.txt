@@ -1,14 +1,14 @@
 # PyVibLocalizer
-## visualize atomic mode and genetrate displacement vectors (normal/local mode, arbitary path)
+**visualize atomic mode and genetrate displacement vectors (normal/local mode, arbitary path)**
 
 <img src="./_docs/pic/ch2o.png" width="400">
 
 - [Documentation](https://kenhino.github.io/PyVibLocalizer/index.html#)
 
-- Installation
-    ```bash
-    $ git clone https://github.com/KenHino/PyVibLocalizer
-    ```
+## Installation
+```bash
+$ git clone https://github.com/KenHino/PyVibLocalizer
+```
 
 - Requirements
     - must
@@ -26,12 +26,6 @@
             If WSL2 or Ubuntu,
             ```bash
             $ sudo apt install blender # If Mac OS brew install --cask blender
-            $ sudo apt install subversion # If Mac OS brew install svn
-            ```
-            If required,
-            ```bash
-            $ pip install future_fstrings
-            $ pip install bpy
             ```
             In your `.bashrc` files
             ```
@@ -41,6 +35,18 @@
             When you execute `main.py`
             ```
             blender --python main.py
+            ```
+            If you use Jupyter Notebook
+            ```bash
+            $ pip install blender-notebook
+            $ blender_notebook install --blender-exec="/usr/bin/blender"
+            ```
+            where `/usr/bin/blender` is your blender installed PATH.
+            If required,
+            ```bash
+            $ sudo apt install subversion # If Mac OS brew install svn
+            $ pip install future_fstrings
+            $ pip install bpy
             ```
 
         - [Atomic Simulation Environment](https://wiki.fysik.dtu.dk/ase/)

@@ -12,6 +12,7 @@ Hello, vibration!
 
    ./README.md
    
+   quick_start
    pyvib
    visual_cls
    local_cls

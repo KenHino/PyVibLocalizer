@@ -2,16 +2,16 @@ try:
     import bpy
 except ImportError:
     print('You cannot use blender by import error')
-import numpy as np
 import math
-from typing import List, Tuple
-from PIL import ImageColor
-import units
-import random
 import mendeleev
+import numpy as np
+from PIL import ImageColor
+from typing import List, Optional, Tuple, Union
+
+import units
 
 class Visualizer():
-    def __init__(self, vibration, arrow_scale):
+    def __init__(self, vibration, arrow_scale: float):
         self.freq = vibration.freq
         self.disp = vibration.disp
         self.geom = vibration.geom
@@ -25,8 +25,11 @@ class Visualizer():
 
         for item in bpy.data.objects:
             bpy.data.objects.remove(item)
+           
+        for item in bpy.data.collections:
+            if item.name != 'Collection':
+                bpy.data.collections.remove(item)
 
-        # ======NEW CAMERA
         bpy.ops.object.camera_add(enter_editmode=False, align='VIEW', 
                 location=(4, -6, 4), rotation=(1.3, 0, 0.5))
         self.scale = arrow_scale
@@ -45,7 +48,8 @@ class Visualizer():
             phi += 2*math.pi
         return (r, theta, phi)
 
-    def plot_atom(self, element, xyz: Tuple[float, float, float], number: int):
+    def plot_atom(self, element: str, 
+            xyz: Tuple[float, float, float], number: int):
         ele = mendeleev.element(element)
         x, y, z = (np.array(xyz) / units.ANGSTROM).tolist()
         radius = ele.atomic_radius * 1.0e-02
@@ -76,7 +80,9 @@ class Visualizer():
             atom.data.materials.append(mat)
             self.add_collection('molecule')
 
-    def plot_bonds(self, bonds):
+    def plot_bonds(self, 
+        bonds: List[List[
+            Union[Tuple[float, float, float], Tuple[float, float, float]]]]):
         mat = bpy.data.materials.new('bond')
         mat.diffuse_color = (1, 1, 1, 1)
         for bond in bonds:
@@ -84,22 +90,19 @@ class Visualizer():
             vec2 = np.array(bond[1]) / units.ANGSTROM
             r, theta, phi = self.angles(vec1, vec2)
             bpy.ops.mesh.primitive_cylinder_add(location=tuple((vec1+vec2)/2), 
-                    radius=0.1, vertices=128, depth=r, rotation=(0, theta, phi))
+                    radius=0.05, vertices=128, depth=r, rotation=(0, theta, phi))
 
             self.bond_number += 1
             name = f'bond_{self.bond_number}'
             bpy.context.object.name = name
-
-            #_bond = bpy.data.objects[name]
-            #_bond.data.materials.append(mat)
             self.add_collection('bonds')
         self.join_object('bonds')
         bpy.context.object.name = '_bonds'
         _bonds = bpy.data.objects['_bonds']
         _bonds.data.materials.append(mat)
-        
 
-    def plot_arrow(self, starts, vectors, name, scale=1.0):
+    def plot_arrow(self, starts: List[float], vectors: List[float], 
+            name: str, scale: Optional[float] =1.0):
         starts = np.array(starts) / units.ANGSTROM
         vectors = np.array(vectors).reshape(self.natom, 3) / units.ANGSTROM
         mat = bpy.data.materials.new('vec')

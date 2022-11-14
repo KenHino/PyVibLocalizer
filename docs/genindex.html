@@ -15,6 +15,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -38,6 +39,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="README.html">PyVibLocalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start (Eigen Cation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyvib.html">pyvib module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visual_cls.html">visual_cls module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="local_cls.html">local_cls module</a></li>
@@ -79,6 +81,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#J"><strong>J</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -131,7 +134,7 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyvib.html#pyvib.Vibration.disp">disp (pyvib.Vibration attribute)</a>
+      <li><a href="pyvib.html#pyvib.Vibration.diagonalize">diagonalize() (pyvib.Vibration method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -166,6 +169,14 @@
       <li><a href="pyvib.html#pyvib.Vibration.group_localize">group_localize() (pyvib.Vibration method)</a>
 </li>
       <li><a href="local_cls.html#local_cls.GroupLocalizer">GroupLocalizer (class in local_cls)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blender.html#blender.Visualizer.join_object">join_object() (blender.Visualizer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -210,6 +221,12 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyvib.html#pyvib.Vibration.mw_disp">mw_disp (pyvib.Vibration attribute)</a>
+</li>
+      <li><a href="pyvib.html#pyvib.Vibration.mw_hess">mw_hess (pyvib.Vibration attribute)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
@@ -237,14 +254,12 @@
       </ul></li>
       <li><a href="blender.html#blender.Visualizer.plot_atom">plot_atom() (blender.Visualizer method)</a>
 </li>
-      <li><a href="blender.html#blender.Visualizer.plot_bond">plot_bond() (blender.Visualizer method)</a>
-
-      <ul>
-        <li><a href="visual_cls.html#visual_cls.Visualizer.plot_bond">(visual_cls.Visualizer method)</a>
+      <li><a href="visual_cls.html#visual_cls.Visualizer.plot_bond">plot_bond() (visual_cls.Visualizer method)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blender.html#blender.Visualizer.plot_bonds">plot_bonds() (blender.Visualizer method)</a>
+</li>
       <li><a href="visual_cls.html#visual_cls.Visualizer.plot_number">plot_number() (visual_cls.Visualizer method)</a>
 </li>
       <li><a href="visual_cls.html#visual_cls.Visualizer.plot_sphere">plot_sphere() (visual_cls.Visualizer method)</a>
@@ -270,6 +285,8 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyvib.html#pyvib.read_fchk_g16">read_fchk_g16() (in module pyvib)</a>
+</li>
       <li><a href="pyvib.html#pyvib.read_minfo">read_minfo() (in module pyvib)</a>
 </li>
   </ul></td>

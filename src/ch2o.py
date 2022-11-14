@@ -35,7 +35,7 @@ disp = [[-3.77832663e-05, -1.44206524e-01, -3.90016272e-02,
          -3.51978664e-01, -1.47389841e-01,  5.47263255e-01]]#'Bohr(mass(AMU???) weighted)'
 
 
-#geom, freq, disp = read_minfo("minfo_sample/ch2o.minfo")
+#geom, freq, disp = read_minfo("sample/ch2o.minfo")
 
 
 #sim = Vibration(geom, freq, disp)
@@ -44,8 +44,7 @@ disp = [[-3.77832663e-05, -1.44206524e-01, -3.90016272e-02,
 #sim.localize(option='Pipek-Mezy', window=500)
 #sim.visualize()
 import numpy as np
-sim = Vibration(geom)
-sim.group_localize(domain=[[0,1],[2,3]], 
-mwhess=np.array(disp).T@np.diag(np.array(freq)**2)@np.array(disp), 
-unit_omega='cm-1', unit_mass='AMU')
-sim.visualize(atom_number=True, blender=True)
+mw_hess = np.array(disp).T@np.diag(np.array(freq)**2)@np.array(disp)
+sim = Vibration(geom, mw_hess=np.array(mw_hess), unit_omega='cm-1', unit_mass='AMU')
+#sim.group_localize(domain=[[0,1,2,3]], mw_hess=mw_hess, unit_omega='cm-1', unit_mass='AMU')
+sim.visualize(blender=True)
