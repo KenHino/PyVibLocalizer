@@ -2,13 +2,9 @@ from collections import defaultdict, Counter
 import copy
 import itertools
 import math
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import mendeleev
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
-import tkinter as tk
-from tkinter import ttk
+
 from typing import List, Dict, Optional, Tuple, Union
 
 from local_cls import Localizer, GroupLocalizer
@@ -136,15 +132,8 @@ def read_fchk_g16(file_path : str
         Tuple : multiple contents listed below.
 
     Return contents:
-        - list(str) : atoms
-        - numpy.ndarray : mass in AMU.
-        - numpy.ndarray : coordinate in a.u. \
-                Shape is ``(natom, 3)`` , where ``natom = len(atoms)``.
-        - numpy.ndarray : frequency in cm-1. Shape is ``(ndof, )``, \
-                where ``ndof`` = ``3*natom-6`` or ``3*natom-5``.\
-                ``Nan`` represents imaginary frequency.
-        - numpy.ndarray : displacement vectors in a.u. .\
-                Shape is ``(ndof, natom, 3)``. Not mass weighted and normalized !!
+        - List[List[Union[str, Tuple[float, float, float]]]] : Geometry
+        - numpy.ndarray : mass-weighted hessian.
 
     """
     from mendeleev import element
@@ -202,22 +191,23 @@ def read_fchk_g16(file_path : str
         return out.T + out - np.diag(np.diag(out))
 
     natom = len(atom)
-    geom = np.array(geom).reshape(natom, 3)
+    coord= np.array(geom).reshape(natom, 3)
     hess_cartesian = to_symmetric(np.array(d1_hess_cartesian), natom*3)
     mass = np.array(mass)
-    trans_mass_weighted = 1 / np.sqrt(np.repeat(mass * const.au_in_dalton, 3)).reshape(-1,1)
+    trans_mass_weighted = 1 / np.sqrt(np.repeat(mass * units.DALTON, 3)).reshape(-1,1)
     mass_weighted_hessian = np.multiply(hess_cartesian, trans_mass_weighted@trans_mass_weighted.T)
 
-    E, V = scipy.linalg.eigh(mass_weighted_hessian)
-    freq = np.sqrt(E) * const.au_in_cm1
+    if False:
+        E, V = scipy.linalg.eigh(mass_weighted_hessian)
+        freq = np.sqrt(E) * const.au_in_cm1
 
-    ndof = V.shape[0]
-    disp_mwc = np.array(V.T).reshape(ndof, natom, 3)
-    disp = np.zeros_like(disp_mwc)
-    for iatom in range(natom):
-        disp[:,iatom, :] = disp_mwc[:,iatom,:] / np.sqrt(mass[iatom])
-
-    return (atom, mass, geom, freq, disp)
+        ndof = V.shape[0]
+        disp_mwc = np.array(V.T).reshape(ndof, natom, 3)
+        disp = np.zeros_like(disp_mwc)
+        for iatom in range(natom):
+            disp[:,iatom, :] = disp_mwc[:,iatom,:] / np.sqrt(mass[iatom])
+    geom = [[a,tuple(c)] for a,c in zip(atom, coord)]
+    return (geom, mass_weighted_hessian)
 
 class Vibration:
     """ Main Vibraion class
@@ -280,7 +270,7 @@ class Vibration:
             raise NotImplementedError
 
         if unit_mass.lower() in ['amu', 'dalton']:
-            mw_disp = [(np.array(d) * math.sqrt(units.DALTON)).tolist() for d in mw_disp]
+            mw_disp = (np.array(mw_disp) * math.sqrt(units.DALTON)).tolist()
         elif unit_mass.lower() in ['a.u.', 'au', 'emu']:
             pass
         else:
@@ -298,9 +288,7 @@ class Vibration:
                 dist(self.coord[i], self.coord[k]) / units.ANGSTROM]
 
         self.natom = len(self.geom)
-
         self.set_disp()
-
         self.Q_mat = np.matrix(self.disp).T
 
         if mw_hess is not None:
@@ -312,7 +300,7 @@ class Vibration:
     def set_disp(self):
         disp = np.array(self.mw_disp)
         for i, a in enumerate(self.atom):
-            disp[:, 3*i:3*i+3] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON) 
+            disp[:, 3*i:3*i+3] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
         self.disp = disp.tolist()
 
     def visualize(self, arrow_scale: Optional[float]=-3,
@@ -339,6 +327,11 @@ class Vibration:
             vis.show()
 
         else:
+            from mpl_toolkits.mplot3d import Axes3D
+            from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+            import matplotlib.pyplot as plt
+            import tkinter as tk
+            from tkinter import ttk
             from visual_cls import Visualizer
             ### root object ###
             root = tk.Tk()
@@ -407,6 +400,7 @@ class Vibration:
                 self.disp[x][y] = self.Q_mat[y,x]
 
         print(option,'metric = ',loc.metric(self.Q_mat))
+        return (self.disp, self.freq)
 
     def diagonalize(self,
         mw_hess: np.ndarray,
@@ -418,7 +412,8 @@ class Vibration:
                                             unit_xyz=unit_xyz, unit_omega=unit_omega, unit_mass=unit_mass)
         self.freq = freq[6:]
         self.mw_disp = mw_disp[6:]
-        return (self.mw_disp, self.freq)
+        self.disp = self.disp[6:]
+        return (self.disp, self.freq)
 
     def group_localize(self,
         mw_hess: np.ndarray,
@@ -435,6 +430,11 @@ class Vibration:
         """
 
         if unit_omega.lower() in ['cm1', 'cm', 'cm-1', 'kayser']:
+            '''
+            E = 1/2 m omega^2 x^2
+            hess = omega^2
+            mwc = sqrt{m}x
+            '''
             mw_hess *= units.CM1**2
         elif unit_omega.lower() in ['ev']:
             mw_hess *= units.EV**2
@@ -444,7 +444,8 @@ class Vibration:
             raise NotImplementedError
 
         loc = GroupLocalizer(self, mw_hess, domain)
-        self.Q_mat, self.freq = loc.run()
+        self.Q_mat, freq = loc.run()
+        self.freq = [f if math.isnan(f) else 0.0 for f in freq]            
 
         if unit_xyz.lower() in ['bohr', 'au', 'a.u.']:
             pass
@@ -461,4 +462,4 @@ class Vibration:
             raise NotImplementedError
         self.mw_disp = self.Q_mat.T.tolist()
         self.set_disp()
-        return (self.mw_disp, self.freq)
+        return (self.disp, self.freq)

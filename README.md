@@ -13,11 +13,7 @@ $ git clone https://github.com/KenHino/PyVibLocalizer
 - Requirements
     - must
         ```bash
-        $ pip install mendeleev numpy scipy matplotlib
-        ```
-        if you use WSL2, below command may be needed.
-        ```bash
-        $ sudo apt-get install python3-tk
+        $ pip install mendeleev numpy scipy
         ```
 
     - better
@@ -30,24 +26,39 @@ $ git clone https://github.com/KenHino/PyVibLocalizer
             In your `.bashrc` files
             ```
             set PYTHONHOME=`which python3` # May be not not required
-            alias blender='blender --python-use-system-env'
+            alias blender='/usr/bin/blender --python-use-system-env'
             ```
+            where `/usr/bin/blender` is your blender installed PATH. In MaxOS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
             When you execute `main.py`
             ```
-            blender --python main.py
+            $ blender --python main.py
             ```
+            When install package in blender-python in Mac OS
+            ```
+            $ <BPYTHON> -m pip install <PACKAGE>
+            ```
+            Where <BPYTHON> may be `/Applications/Blender.app/Contents/Resources/3.3/python/bin/python3.10`, <PACKAGE>=`numpy, scipy, mendeleev, ase` 
             If you use Jupyter Notebook
             ```bash
             $ pip install blender-notebook
             $ blender_notebook install --blender-exec="/usr/bin/blender"
             ```
-            where `/usr/bin/blender` is your blender installed PATH.
+            where `/usr/bin/blender` is your blender installed PATH. In MaxOS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
             If required,
             ```bash
             $ sudo apt install subversion # If Mac OS brew install svn
             $ pip install future_fstrings
             $ pip install bpy
             ```
+        - Matplotlib+tkinter
+            ```
+            $ pip install matplotlib
+            ```
+            if you use WSL2, below command may be needed.
+            ```bash
+            $ sudo apt-get install python3-tk
+            ```
+
 
         - [Atomic Simulation Environment](https://wiki.fysik.dtu.dk/ase/)
             ```bash

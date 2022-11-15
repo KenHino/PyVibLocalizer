@@ -122,6 +122,7 @@ class Localizer:
 
         np.set_printoptions(formatter={'float': '{:>8.0f}'.format})
         print('\n', 'localized hessian [cm-2]')
+        print(self.hess,'\n')
         hess = np.dot(np.dot(
             self.unitary,  self.hess), self.unitary.T)
         print(hess, '\n')

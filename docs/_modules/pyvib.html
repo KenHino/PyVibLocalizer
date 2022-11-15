@@ -13,7 +13,6 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -39,6 +38,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">PyVibLocalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start.html">Quick Start (H<span class="math notranslate nohighlight">\(_2\)</span>CO)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyvib.html">pyvib module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visual_cls.html">visual_cls module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../local_cls.html">local_cls module</a></li>
@@ -75,13 +75,9 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_tkagg</span> <span class="kn">import</span> <span class="n">FigureCanvasTkAgg</span>
 <span class="kn">import</span> <span class="nn">mendeleev</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
-<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
+
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">local_cls</span> <span class="kn">import</span> <span class="n">Localizer</span><span class="p">,</span> <span class="n">GroupLocalizer</span>
@@ -209,15 +205,8 @@
 <span class="sd">        Tuple : multiple contents listed below.</span>
 
 <span class="sd">    Return contents:</span>
-<span class="sd">        - list(str) : atoms</span>
-<span class="sd">        - numpy.ndarray : mass in AMU.</span>
-<span class="sd">        - numpy.ndarray : coordinate in a.u. \</span>
-<span class="sd">                Shape is ``(natom, 3)`` , where ``natom = len(atoms)``.</span>
-<span class="sd">        - numpy.ndarray : frequency in cm-1. Shape is ``(ndof, )``, \</span>
-<span class="sd">                where ``ndof`` = ``3*natom-6`` or ``3*natom-5``.\</span>
-<span class="sd">                ``Nan`` represents imaginary frequency.</span>
-<span class="sd">        - numpy.ndarray : displacement vectors in a.u. .\</span>
-<span class="sd">                Shape is ``(ndof, natom, 3)``. Not mass weighted and normalized !!</span>
+<span class="sd">        - List[List[Union[str, Tuple[float, float, float]]]] : Geometry</span>
+<span class="sd">        - numpy.ndarray : mass-weighted hessian.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">mendeleev</span> <span class="kn">import</span> <span class="n">element</span>
@@ -275,22 +264,23 @@
         <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">out</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
 
     <span class="n">natom</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
-    <span class="n">geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">natom</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">coord</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">natom</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">hess_cartesian</span> <span class="o">=</span> <span class="n">to_symmetric</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d1_hess_cartesian</span><span class="p">),</span> <span class="n">natom</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">mass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span>
-    <span class="n">trans_mass_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">mass</span> <span class="o">*</span> <span class="n">const</span><span class="o">.</span><span class="n">au_in_dalton</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">trans_mass_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">mass</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">DALTON</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">mass_weighted_hessian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">hess_cartesian</span><span class="p">,</span> <span class="n">trans_mass_weighted</span><span class="nd">@trans_mass_weighted</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
-    <span class="n">E</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">mass_weighted_hessian</span><span class="p">)</span>
-    <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">E</span><span class="p">)</span> <span class="o">*</span> <span class="n">const</span><span class="o">.</span><span class="n">au_in_cm1</span>
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">E</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">mass_weighted_hessian</span><span class="p">)</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">E</span><span class="p">)</span> <span class="o">*</span> <span class="n">const</span><span class="o">.</span><span class="n">au_in_cm1</span>
 
-    <span class="n">ndof</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">disp_mwc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ndof</span><span class="p">,</span> <span class="n">natom</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="n">disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">disp_mwc</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">iatom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">natom</span><span class="p">):</span>
-        <span class="n">disp</span><span class="p">[:,</span><span class="n">iatom</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">disp_mwc</span><span class="p">[:,</span><span class="n">iatom</span><span class="p">,:]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mass</span><span class="p">[</span><span class="n">iatom</span><span class="p">])</span>
-
-    <span class="k">return</span> <span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">disp</span><span class="p">)</span></div>
+        <span class="n">ndof</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">disp_mwc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ndof</span><span class="p">,</span> <span class="n">natom</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">disp_mwc</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">iatom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">natom</span><span class="p">):</span>
+            <span class="n">disp</span><span class="p">[:,</span><span class="n">iatom</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">disp_mwc</span><span class="p">[:,</span><span class="n">iatom</span><span class="p">,:]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mass</span><span class="p">[</span><span class="n">iatom</span><span class="p">])</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="p">[[</span><span class="n">a</span><span class="p">,</span><span class="nb">tuple</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">coord</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">mass_weighted_hessian</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Vibration"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration">[docs]</a><span class="k">class</span> <span class="nc">Vibration</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Main Vibraion class</span>
@@ -353,7 +343,7 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
         <span class="k">if</span> <span class="n">unit_mass</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;amu&#39;</span><span class="p">,</span> <span class="s1">&#39;dalton&#39;</span><span class="p">]:</span>
-            <span class="n">mw_disp</span> <span class="o">=</span> <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">DALTON</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">mw_disp</span><span class="p">]</span>
+            <span class="n">mw_disp</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mw_disp</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">DALTON</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">unit_mass</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;a.u.&#39;</span><span class="p">,</span> <span class="s1">&#39;au&#39;</span><span class="p">,</span> <span class="s1">&#39;emu&#39;</span><span class="p">]:</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
@@ -371,9 +361,7 @@
                 <span class="n">dist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">ANGSTROM</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">natom</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geom</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">set_disp</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
         <span class="k">if</span> <span class="n">mw_hess</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -385,7 +373,7 @@
 <div class="viewcode-block" id="Vibration.set_disp"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration.set_disp">[docs]</a>    <span class="k">def</span> <span class="nf">set_disp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mw_disp</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="p">):</span>
-            <span class="n">disp</span><span class="p">[:,</span> <span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">/=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mendeleev</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">atomic_weight</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">DALTON</span><span class="p">)</span> 
+            <span class="n">disp</span><span class="p">[:,</span> <span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">/=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mendeleev</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">atomic_weight</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">DALTON</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disp</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Vibration.visualize"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration.visualize">[docs]</a>    <span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span>
@@ -412,6 +400,11 @@
             <span class="n">vis</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="k">else</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+            <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_tkagg</span> <span class="kn">import</span> <span class="n">FigureCanvasTkAgg</span>
+            <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+            <span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+            <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
             <span class="kn">from</span> <span class="nn">visual_cls</span> <span class="kn">import</span> <span class="n">Visualizer</span>
             <span class="c1">### root object ###</span>
             <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
@@ -479,7 +472,8 @@
             <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="o">*</span><span class="mi">3</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_mat</span><span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="n">option</span><span class="p">,</span><span class="s1">&#39;metric = &#39;</span><span class="p">,</span><span class="n">loc</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_mat</span><span class="p">))</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="n">option</span><span class="p">,</span><span class="s1">&#39;metric = &#39;</span><span class="p">,</span><span class="n">loc</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_mat</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Vibration.diagonalize"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration.diagonalize">[docs]</a>    <span class="k">def</span> <span class="nf">diagonalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">mw_hess</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -491,7 +485,8 @@
                                             <span class="n">unit_xyz</span><span class="o">=</span><span class="n">unit_xyz</span><span class="p">,</span> <span class="n">unit_omega</span><span class="o">=</span><span class="n">unit_omega</span><span class="p">,</span> <span class="n">unit_mass</span><span class="o">=</span><span class="n">unit_mass</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mw_disp</span> <span class="o">=</span> <span class="n">mw_disp</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mw_disp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Vibration.group_localize"><a class="viewcode-back" href="../pyvib.html#pyvib.Vibration.group_localize">[docs]</a>    <span class="k">def</span> <span class="nf">group_localize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">mw_hess</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -508,6 +503,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">unit_omega</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cm1&#39;</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">,</span> <span class="s1">&#39;cm-1&#39;</span><span class="p">,</span> <span class="s1">&#39;kayser&#39;</span><span class="p">]:</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            E = 1/2 m omega^2 x^2</span>
+<span class="sd">            hess = omega^2</span>
+<span class="sd">            mwc = sqrt{m}x</span>
+<span class="sd">            &#39;&#39;&#39;</span>
             <span class="n">mw_hess</span> <span class="o">*=</span> <span class="n">units</span><span class="o">.</span><span class="n">CM1</span><span class="o">**</span><span class="mi">2</span>
         <span class="k">elif</span> <span class="n">unit_omega</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ev&#39;</span><span class="p">]:</span>
             <span class="n">mw_hess</span> <span class="o">*=</span> <span class="n">units</span><span class="o">.</span><span class="n">EV</span><span class="o">**</span><span class="mi">2</span>
@@ -517,7 +517,8 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
         <span class="n">loc</span> <span class="o">=</span> <span class="n">GroupLocalizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mw_hess</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Q_mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">loc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q_mat</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">loc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">freq</span><span class="p">]</span>            
 
         <span class="k">if</span> <span class="n">unit_xyz</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bohr&#39;</span><span class="p">,</span> <span class="s1">&#39;au&#39;</span><span class="p">,</span> <span class="s1">&#39;a.u.&#39;</span><span class="p">]:</span>
             <span class="k">pass</span>
@@ -534,7 +535,7 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mw_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_mat</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_disp</span><span class="p">()</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mw_disp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

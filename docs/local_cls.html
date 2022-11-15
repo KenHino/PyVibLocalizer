@@ -14,7 +14,6 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -42,6 +41,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="README.html">PyVibLocalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start (H<span class="math notranslate nohighlight">\(_2\)</span>CO)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyvib.html">pyvib module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visual_cls.html">visual_cls module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">local_cls module</a></li>
@@ -98,10 +98,10 @@
 }
 </style>
 <section id="module-local_cls">
-<span id="local-cls-module"></span><h1>local_cls module<a class="headerlink" href="#module-local_cls" title="Permalink to this heading"></a></h1>
+<span id="local-cls-module"></span><h1>local_cls module<a class="headerlink" href="#module-local_cls" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="local_cls.GroupLocalizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">local_cls.</span></span><span class="sig-name descname"><span class="pre">GroupLocalizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mw_hess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/local_cls.html#GroupLocalizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#local_cls.GroupLocalizer" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">local_cls.</span></span><span class="sig-name descname"><span class="pre">GroupLocalizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mw_hess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/local_cls.html#GroupLocalizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#local_cls.GroupLocalizer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="local_cls.GroupLocalizer.run">
@@ -121,7 +121,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="local_cls.Localizer.metric">
-<span class="sig-name descname"><span class="pre">metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_mat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/local_cls.html#Localizer.metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#local_cls.Localizer.metric" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_mat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/local_cls.html#Localizer.metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#local_cls.Localizer.metric" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
