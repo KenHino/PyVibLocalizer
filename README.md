@@ -28,7 +28,7 @@ $ git clone https://github.com/KenHino/PyVibLocalizer
             set PYTHONHOME=`which python3` # May be not not required
             alias blender='/usr/bin/blender --python-use-system-env'
             ```
-            where `/usr/bin/blender` is your blender installed PATH. In MaxOS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
+            where `/usr/bin/blender` is your blender installed PATH. In Mac OS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
             When you execute `main.py`
             ```
             $ blender --python main.py
@@ -43,7 +43,7 @@ $ git clone https://github.com/KenHino/PyVibLocalizer
             $ pip install blender-notebook
             $ blender_notebook install --blender-exec="/usr/bin/blender"
             ```
-            where `/usr/bin/blender` is your blender installed PATH. In MaxOS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
+            where `/usr/bin/blender` is your blender installed PATH. In Mac OS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
             If required,
             ```bash
             $ sudo apt install subversion # If Mac OS brew install svn
@@ -88,6 +88,5 @@ Group localized coordinate is one of the local mode, which diagonalize subspace 
 
 
 ## Quick Start
-- `.minfo` file can be made by [SINDO](https://tms.riken.jp/research/software/sindo/)
-
-- to run this program, execute `python {$mol_name}.py` (example; mol_name=ch2o, c6h8)
+- See [here]
+- To run this program, execute `python {$mol_name}.py` or `blender --python {$mol_name}.py` (example; mol_name=src/ch2o) 
