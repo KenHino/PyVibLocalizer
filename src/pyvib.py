@@ -276,8 +276,8 @@ class Vibration:
         else:
             raise NotImplementedError
 
-        self.freq = freq
-        self.mw_disp = mw_disp
+        self.freq = np.array(freq)
+        self.mw_disp = np.array(mw_disp)
 
         self.geom = geom
         self.atom = [a[0] for a in geom]
@@ -303,7 +303,7 @@ class Vibration:
             disp[:, 3*i:3*i+3] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
         self.disp = disp.tolist()
 
-    def visualize(self, arrow_scale: Optional[float]=-3,
+    def visualize(self, arrow_scale: Optional[float]=100,
             blender: Optional[bool] =False, atom_number: Optional[bool]=False):
         """Visualize vibrational modes.
 
@@ -428,7 +428,7 @@ class Vibration:
             mwhess (np.ndarray) : mass-weighted hessian
             domain (List[List[float]]): atomic domain such as [[0,1,2],[3,4]]
         """
-
+        mw_hess = np.array(mw_hess)
         if unit_omega.lower() in ['cm1', 'cm', 'cm-1', 'kayser']:
             '''
             E = 1/2 m omega^2 x^2
@@ -445,7 +445,7 @@ class Vibration:
 
         loc = GroupLocalizer(self, mw_hess, domain)
         self.Q_mat, freq = loc.run()
-        self.freq = [f if math.isnan(f) else 0.0 for f in freq]            
+        self.freq = [0.0 if math.isnan(f) else f for f in freq]            
 
         if unit_xyz.lower() in ['bohr', 'au', 'a.u.']:
             pass

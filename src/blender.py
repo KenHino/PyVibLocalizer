@@ -96,10 +96,10 @@ class Visualizer():
             name = f'bond_{self.bond_number}'
             bpy.context.object.name = name
             self.add_collection('bonds')
-        self.join_object('bonds')
-        bpy.context.object.name = '_bonds'
-        _bonds = bpy.data.objects['_bonds']
-        _bonds.data.materials.append(mat)
+        if self.join_object('bonds'):
+            bpy.context.object.name = '_bonds'
+            _bonds = bpy.data.objects['_bonds']
+            _bonds.data.materials.append(mat)
 
     def plot_arrow(self, starts: List[float], vectors: List[float], 
             name: str, scale: Optional[float] =1.0):
@@ -128,10 +128,10 @@ class Visualizer():
             bpy.context.object.name = name_cone
 
             self.add_collection(name)
-        self.join_object(name)
-        bpy.context.object.name = f'mode_{name}'
-        obj = bpy.data.objects[f'mode_{name}']
-        obj.data.materials.append(mat)
+        if self.join_object(name):
+            bpy.context.object.name = f'mode_{name}'
+            obj = bpy.data.objects[f'mode_{name}']
+            obj.data.materials.append(mat)
 
         self.exclude_collection(name)
 
@@ -147,16 +147,23 @@ class Visualizer():
         collection = bpy.data.collections['Collection'].objects.unlink(obj)
 
     def exclude_collection(self, name: str):
-        bpy.context.view_layer.layer_collection.children[name].exclude = True
-
-    def join_object(self, name: str):
+        try:
+            bpy.context.view_layer.layer_collection.children[name].exclude = True
+        except KeyError:
+            pass
+            
+    def join_object(self, name: str) -> bool:
         bpy.ops.object.select_all(action='DESELECT')
-        coll = bpy.data.collections[name]
-        for obj in coll.objects:
-            if obj.type == 'MESH':
-               obj.select_set(True)
-        bpy.ops.object.join()
-        bpy.ops.object.select_all(action='DESELECT')
+        try:
+            coll = bpy.data.collections[name]
+            for obj in coll.objects:
+                if obj.type == 'MESH':
+                   obj.select_set(True)
+            bpy.ops.object.join()
+            bpy.ops.object.select_all(action='DESELECT')
+            return True
+        except KeyError:
+            return False
 
     def show(self):
         for i, atom in enumerate(self.geom):
