@@ -120,12 +120,8 @@ class Localizer:
 
         #self.Q_mat = np.dot(self.Q_mat, rotate_matrix)
 
-        np.set_printoptions(formatter={'float': '{:>8.0f}'.format})
-        print('\n', 'localized hessian [cm-2]')
-        print(self.hess,'\n')
         hess = np.dot(np.dot(
             self.unitary,  self.hess), self.unitary.T)
-        print(hess, '\n')
 
         return (self.Q_mat, list(np.sqrt(np.diag(hess))))
 
