@@ -29,6 +29,7 @@ $ git clone https://github.com/KenHino/PyVibLocalizer
             alias blender='/usr/bin/blender --python-use-system-env'
             ```
             where `/usr/bin/blender` is your blender installed PATH. In Mac OS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
+            
             When you execute `main.py`
             ```
             $ blender --python main.py
@@ -37,13 +38,16 @@ $ git clone https://github.com/KenHino/PyVibLocalizer
             ```
             $ <BPYTHON> -m pip install <PACKAGE>
             ```
-            Where <BPYTHON> may be `/Applications/Blender.app/Contents/Resources/3.3/python/bin/python3.10`, <PACKAGE>=`numpy, scipy, mendeleev, ase` 
-            If you use Jupyter Notebook
+            where \<BPYTHON\> may be `/Applications/Blender.app/Contents/Resources/3.3/python/bin/python3.10`, 
+            \<PACKAGE\>=`numpy, scipy, mendeleev, ase`.
+            
+            When you use Jupyter Notebook
             ```bash
             $ pip install blender-notebook
             $ blender_notebook install --blender-exec="/usr/bin/blender"
             ```
             where `/usr/bin/blender` is your blender installed PATH. In Mac OS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
+            
             If required,
             ```bash
             $ sudo apt install subversion # If Mac OS brew install svn
@@ -54,7 +58,7 @@ $ git clone https://github.com/KenHino/PyVibLocalizer
             ```
             $ pip install matplotlib
             ```
-            if you use WSL2, below command may be needed.
+            Tf you use WSL2, below command may be needed.
             ```bash
             $ sudo apt-get install python3-tk
             ```
