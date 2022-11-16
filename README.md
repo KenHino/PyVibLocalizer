@@ -88,5 +88,5 @@ Group localized coordinate is one of the local mode, which diagonalize subspace 
 
 
 ## Quick Start
-- See [here]
+- See [here](https://kenhino.github.io/PyVibLocalizer/quick_start.html)
 - To run this program, execute `python {$mol_name}.py` or `blender --python {$mol_name}.py` (example; mol_name=src/ch2o) 
