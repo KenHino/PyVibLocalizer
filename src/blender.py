@@ -62,7 +62,7 @@ class Visualizer():
         bpy.context.object.name = name
 
         mat = bpy.data.materials.new(element)
-        mat.diffuse_color = (color[0]/255, color[1]/255, color[2]/255, 0.95)
+        mat.diffuse_color = (color[0]/255, color[1]/255, color[2]/255, 1)
 
         atom = bpy.data.objects[name]
         atom.data.materials.append(mat)
