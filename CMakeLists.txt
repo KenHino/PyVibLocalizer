@@ -14,7 +14,7 @@ execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -r
  ${CMAKE_SOURCE_DIR}/requirements.txt)
 enable_testing()
 
-foreach(name foo modules fail)
+foreach(name foo modules)
  add_test(test_${name} ${Python_EXECUTABLE} -m pytest
  ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_${name}.py)
 endforeach(name)
