@@ -6,9 +6,13 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v3
+    - name: install blender
+      run: sudo apt install blender
     - name: cmake
       run: cd tests && mkdir build && cd build && cmake ../..
     - name: make
       run: cd tests/build && make
     - name: ctest
       run: cd tests/build && ctest
+    - name: visualize
+      run: timeout 15 /usr/bin/blender --python-use-system-env -P src/ch2o.py
