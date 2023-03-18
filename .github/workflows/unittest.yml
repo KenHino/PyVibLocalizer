@@ -3,8 +3,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DISPLAY: ':99.0'
     steps:
     - name: checkout
       uses: actions/checkout@v3
@@ -16,5 +14,3 @@ jobs:
       run: cd tests/build && make
     - name: ctest
       run: cd tests/build && ctest
-    - name: visualize
-      run: timeout 15 /usr/bin/blender --python-use-system-env -P src/ch2o.py
