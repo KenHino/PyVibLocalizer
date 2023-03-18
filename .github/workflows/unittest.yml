@@ -1,14 +1,14 @@
 name: unittest
 on: [push]
 jobs:
- build:
-  runs-on: ubuntu-latest
-  steps:
-  - name: checkout
-   uses: actions/checkout@v3
-  - name: cmake
-   run: cd tests && mkdir build && cd build && cmake ../..
-  - name: make
-   run: cd tests/build && make
-  - name: ctest
-   run: cd tests/build && ctest
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: cmake
+      run: cd tests && mkdir build && cd build && cmake ../..
+    - name: make
+      run: cd tests/build && make
+    - name: ctest
+      run: cd tests/build && ctest
