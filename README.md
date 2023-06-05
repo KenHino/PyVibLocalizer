@@ -10,64 +10,43 @@
 $ git clone https://github.com/KenHino/PyVibLocalizer
 ```
 
-- Requirements
-    - must
-        ```bash
-        $ pip install mendeleev numpy scipy
-        ```
+- In WSL2 or Ubuntu,
+```bash
+$ sudo apt install blender
+```
+- In Mac, 
+```bash
+$ brew install --cask blender
+```
 
-    - better
-        - [Blender](https://www.blender.org/)
+or simply install from [homepage](https://www.blender.org/). 
 
-            If WSL2 or Ubuntu,
-            ```bash
-            $ sudo apt install blender # If Mac OS brew install --cask blender
-            ```
-            In your `.bashrc` files
-            ```
-            set PYTHONHOME=`which python3` # May be not not required
-            alias blender='/usr/bin/blender --python-use-system-env'
-            ```
-            where `/usr/bin/blender` is your blender installed PATH. In Mac OS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
-            
-            When you execute `main.py`
-            ```
-            $ blender --python main.py
-            ```
-            When install package in blender-python in Mac OS
-            ```
-            $ <BPYTHON> -m pip install <PACKAGE>
-            ```
-            where \<BPYTHON\> may be `/Applications/Blender.app/Contents/Resources/3.3/python/bin/python3.10`, 
-            \<PACKAGE\>=`numpy, scipy, mendeleev, ase`.
-            
-            When you use Jupyter Notebook
-            ```bash
-            $ pip install blender-notebook
-            $ blender_notebook install --blender-exec="/usr/bin/blender"
-            ```
-            where `/usr/bin/blender` is your blender installed PATH. In Mac OS, this may be `/Applications/Blender.app/Contents/MacOS/Blender`.
-            
-            If required,
-            ```bash
-            $ sudo apt install subversion # If Mac OS brew install svn
-            $ pip install future_fstrings
-            $ pip install bpy
-            ```
-        - Matplotlib+tkinter
-            ```
-            $ pip install matplotlib
-            ```
-            Tf you use WSL2, below command may be needed.
-            ```bash
-            $ sudo apt-get install python3-tk
-            ```
+- First, modify PATH related to blender in `CMakeLists.txt` in PyVibLocalizer directory. Below is an example of PATH in Mac OS. (In Ubuntu, this may be `/usr/bin/blender`)
+```cmake
+set(BPython "/Applications/Blender.app/Contents/Resources/3.5/python/bin/python3.10")
+set(BPythonDir "/Applications/Blender.app/Contents/Resources/3.5/python/")
+set(Blender "/Applications/Blender.app/Contents/MacOS/Blender")
+```
 
+- Next, move to `test` directory and make `build` directory. And execute `cmake`.
+```bash
+$ cd test
+$ mkdir build
+$ cd build
+$ cmake ../..
+```
 
-        - [Atomic Simulation Environment](https://wiki.fysik.dtu.dk/ase/)
-            ```bash
-            $ pip install ase
-            ```
+- At last, activate virtual environment and execute a some example file such as `work/ch2o.py`.
+```bash
+$ source venv/bin/activate
+$ blender --python main.py
+```
+
+- And you can also use jupyter notebook in blender. 
+```bash
+$ jupyter-lab
+```
+In jupyter notebook, you can use `blender_kernel` to execute blender script. 
 
 
 ## Local mode

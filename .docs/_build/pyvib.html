@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyvib package &mdash; PyVibLocalizer 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Quick Start" href="quick_start.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyVibLocalizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">PyVibLocalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pyvib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyvib.base">pyvib.base module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.base.Vibration"><code class="docutils literal notranslate"><span class="pre">Vibration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.unit"><code class="docutils literal notranslate"><span class="pre">Vibration.unit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.freq"><code class="docutils literal notranslate"><span class="pre">Vibration.freq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.mw_disp"><code class="docutils literal notranslate"><span class="pre">Vibration.mw_disp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.mw_hess"><code class="docutils literal notranslate"><span class="pre">Vibration.mw_hess</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.geom"><code class="docutils literal notranslate"><span class="pre">Vibration.geom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.bond"><code class="docutils literal notranslate"><span class="pre">Vibration.bond</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.nmode"><code class="docutils literal notranslate"><span class="pre">Vibration.nmode</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.natom"><code class="docutils literal notranslate"><span class="pre">Vibration.natom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.Q_mat"><code class="docutils literal notranslate"><span class="pre">Vibration.Q_mat</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.diagonalize"><code class="docutils literal notranslate"><span class="pre">Vibration.diagonalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.group_localize"><code class="docutils literal notranslate"><span class="pre">Vibration.group_localize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.localize"><code class="docutils literal notranslate"><span class="pre">Vibration.localize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.set_disp"><code class="docutils literal notranslate"><span class="pre">Vibration.set_disp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.base.Vibration.visualize"><code class="docutils literal notranslate"><span class="pre">Vibration.visualize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.base.dist"><code class="docutils literal notranslate"><span class="pre">dist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.base.read_fchk_g16"><code class="docutils literal notranslate"><span class="pre">read_fchk_g16()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.base.read_minfo"><code class="docutils literal notranslate"><span class="pre">read_minfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.base.write_minfo"><code class="docutils literal notranslate"><span class="pre">write_minfo()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyvib.blender">pyvib.blender module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.blender.Visualizer"><code class="docutils literal notranslate"><span class="pre">Visualizer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.add_collection"><code class="docutils literal notranslate"><span class="pre">Visualizer.add_collection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.angles"><code class="docutils literal notranslate"><span class="pre">Visualizer.angles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.exclude_collection"><code class="docutils literal notranslate"><span class="pre">Visualizer.exclude_collection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.join_object"><code class="docutils literal notranslate"><span class="pre">Visualizer.join_object()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.plot_arrow"><code class="docutils literal notranslate"><span class="pre">Visualizer.plot_arrow()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.plot_atom"><code class="docutils literal notranslate"><span class="pre">Visualizer.plot_atom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.plot_bonds"><code class="docutils literal notranslate"><span class="pre">Visualizer.plot_bonds()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.blender.Visualizer.show"><code class="docutils literal notranslate"><span class="pre">Visualizer.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyvib.local_cls">pyvib.local_cls module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.local_cls.GroupLocalizer"><code class="docutils literal notranslate"><span class="pre">GroupLocalizer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.local_cls.GroupLocalizer.run"><code class="docutils literal notranslate"><span class="pre">GroupLocalizer.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyvib.local_cls.Localizer"><code class="docutils literal notranslate"><span class="pre">Localizer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.local_cls.Localizer.construct_unitary"><code class="docutils literal notranslate"><span class="pre">Localizer.construct_unitary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.local_cls.Localizer.metric"><code class="docutils literal notranslate"><span class="pre">Localizer.metric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyvib.local_cls.Localizer.run"><code class="docutils literal notranslate"><span class="pre">Localizer.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyvib.units">pyvib.units module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyvib-visual-cls-module">pyvib.visual_cls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyvib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyVibLocalizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyvib package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyvib.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyvib-package">
+<h1>pyvib package<a class="headerlink" href="#pyvib-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-pyvib.base">
+<span id="pyvib-base-module"></span><h2>pyvib.base module<a class="headerlink" href="#module-pyvib.base" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyvib.base.Vibration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyvib.base.</span></span><span class="sig-name descname"><span class="pre">Vibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mw_disp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mw_hess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Bohr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_xyz_hess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Bohr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_omega</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Hartree'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'a.u.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/base.html#Vibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.Vibration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Main Vibraion class</p>
+<p>This class allows localization and visualization of vibrational modes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><a class="headerlink" href="#pyvib.base.Vibration.unit" title="Permalink to this definition"></a></dt>
+<dd><p>Unit of displacement vector. Defaults to <code class="docutils literal notranslate"><span class="pre">Bohr</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.freq">
+<span class="sig-name descname"><span class="pre">freq</span></span><a class="headerlink" href="#pyvib.base.Vibration.freq" title="Permalink to this definition"></a></dt>
+<dd><p>The list of frequencies in cm-1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional, List(float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.mw_disp">
+<span class="sig-name descname"><span class="pre">mw_disp</span></span><a class="headerlink" href="#pyvib.base.Vibration.mw_disp" title="Permalink to this definition"></a></dt>
+<dd><p>The list of mass-weighted displacement vectors.                 <code class="docutils literal notranslate"><span class="pre">disp[imode][iatom_xyz]</span></code> gives displacement from refernce coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional, List[List[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.mw_hess">
+<span class="sig-name descname"><span class="pre">mw_hess</span></span><a class="headerlink" href="#pyvib.base.Vibration.mw_hess" title="Permalink to this definition"></a></dt>
+<dd><p>mass-weighted hessian</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional, np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.geom">
+<span class="sig-name descname"><span class="pre">geom</span></span><a class="headerlink" href="#pyvib.base.Vibration.geom" title="Permalink to this definition"></a></dt>
+<dd><p>Referenece geometry.             <code class="docutils literal notranslate"><span class="pre">geom[iatom][0]</span></code> gives element symbol.             <code class="docutils literal notranslate"><span class="pre">geom[iatom][1]</span></code> gives the refernce cartesian coordinate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[List[str, Tuple[float,flotat,float]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.bond">
+<span class="sig-name descname"><span class="pre">bond</span></span><a class="headerlink" href="#pyvib.base.Vibration.bond" title="Permalink to this definition"></a></dt>
+<dd><p>The pair of atom coordinates which bonded each other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[List[Tuple[int,int]]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.nmode">
+<span class="sig-name descname"><span class="pre">nmode</span></span><a class="headerlink" href="#pyvib.base.Vibration.nmode" title="Permalink to this definition"></a></dt>
+<dd><p>Number of modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.natom">
+<span class="sig-name descname"><span class="pre">natom</span></span><a class="headerlink" href="#pyvib.base.Vibration.natom" title="Permalink to this definition"></a></dt>
+<dd><p>Number of atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.Q_mat">
+<span class="sig-name descname"><span class="pre">Q_mat</span></span><a class="headerlink" href="#pyvib.base.Vibration.Q_mat" title="Permalink to this definition"></a></dt>
+<dd><p>Unitary matrix aligned displacement vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geom</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>,</em><em>float</em><em>,</em><em>float</em><em>]</em><em>]</em><em>]</em>) – Referenece geometry.             <code class="docutils literal notranslate"><span class="pre">geom[iatom][0]</span></code> gives element symbol.             <code class="docutils literal notranslate"><span class="pre">geom[iatom][1]</span></code> gives the refernce cartesian coordinate.</p></li>
+<li><p><strong>freq</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – The list of frequencies in cm-1.</p></li>
+<li><p><strong>disp</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – The list of displacement vectors.                 <code class="docutils literal notranslate"><span class="pre">disp[imode][iatom_xyz]</span></code> gives displacement from refernce coordinates.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.diagonalize">
+<span class="sig-name descname"><span class="pre">diagonalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mw_hess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'au'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_omega</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'au'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'au'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyvib/base.html#Vibration.diagonalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.Vibration.diagonalize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.group_localize">
+<span class="sig-name descname"><span class="pre">group_localize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mw_hess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'au'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_omega</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'au'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'au'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyvib/base.html#Vibration.group_localize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.Vibration.group_localize" title="Permalink to this definition"></a></dt>
+<dd><p>Generate Group Localized Coordinate from mass-weighted hessian</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mwhess</strong> (<em>np.ndarray</em>) – mass-weighted hessian</p></li>
+<li><p><strong>domain</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – atomic domain such as [[0,1,2],[3,4]]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.localize">
+<span class="sig-name descname"><span class="pre">localize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Pipek-Mezey'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/base.html#Vibration.localize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.Vibration.localize" title="Permalink to this definition"></a></dt>
+<dd><p>Localize vibrational modes.</p>
+<p>Vibration mode localization with local_cls module.</p>
+<ul class="simple">
+<li><p>Pipek-Mezey metric</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\xi_{\mathrm{at}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k} \sum_{i=1}^{n}\left(\tilde{C}_{i p}^{\mathrm{sub}}\right)^{2}
+\\
+\tilde{C}_{i p}^{\mathrm{sub}}=\sum_{\alpha=x, y, z}\left(\tilde{Q}_{i \alpha, p}^{\mathrm{sub}}\right)^{2}\end{split}\]</div>
+<ul class="simple">
+<li><p>Boys metric</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\xi_{\mathrm{dist}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k}\left(\boldsymbol{R}_{p}^{\text {center }}\right)^{2}
+\\
+\boldsymbol{R}_{p}^{\text {center }}=\sum_{i=1}^{n} \tilde{C}_{i p}^{\mathrm{sub}} \boldsymbol{R}_{i}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>option</strong> (<em>str</em>) – The metric of localization. <code class="docutils literal notranslate"><span class="pre">Boys</span></code> or <code class="docutils literal notranslate"><span class="pre">Pipek-Mezey</span></code>.</p></li>
+<li><p><strong>window</strong> (<em>float</em>) – window frequency in cm-1.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sim</span> <span class="o">=</span> <span class="n">Vibration</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">disp</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim</span><span class="o">.</span><span class="n">localize</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.set_disp">
+<span class="sig-name descname"><span class="pre">set_disp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/base.html#Vibration.set_disp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.Vibration.set_disp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.base.Vibration.visualize">
+<span class="sig-name descname"><span class="pre">visualize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrow_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blender</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/base.html#Vibration.visualize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.Vibration.visualize" title="Permalink to this definition"></a></dt>
+<dd><p>Visualize vibrational modes.</p>
+<p>Vibration mode visualization with Matplotlib and tinker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arrow_scale</strong> (<em>float</em>) – The scale of displacement arrows. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>blender</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – View by blender.</p></li>
+<li><p><strong>atom_number</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – Plot atom number</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sim</span> <span class="o">=</span> <span class="n">Vibration</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">disp</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyvib.base.dist">
+<span class="sig-prename descclassname"><span class="pre">pyvib.base.</span></span><span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/base.html#dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.dist" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyvib.base.read_fchk_g16">
+<span class="sig-prename descclassname"><span class="pre">pyvib.base.</span></span><span class="sig-name descname"><span class="pre">read_fchk_g16</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyvib/base.html#read_fchk_g16"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.read_fchk_g16" title="Permalink to this definition"></a></dt>
+<dd><p>Read Hessian in <cite>.fchk</cite> files from Gaussian16.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – Path to <code class="docutils literal notranslate"><span class="pre">fchk</span></code> file.</p></li>
+<li><p><strong>use_trans</strong> (<em>bool</em>) – Use translational vector. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>use_rot</strong> (<em>bool</em>) – Use rotatinal vector. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>multiple contents listed below.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Return contents:</dt><dd><ul class="simple">
+<li><p>List[List[Union[str, Tuple[float, float, float]]]] : Geometry</p></li>
+<li><p>numpy.ndarray : mass-weighted hessian.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyvib.base.read_minfo">
+<span class="sig-prename descclassname"><span class="pre">pyvib.base.</span></span><span class="sig-name descname"><span class="pre">read_minfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_trans</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_rot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyvib/base.html#read_minfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.read_minfo" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyvib.base.write_minfo">
+<span class="sig-prename descclassname"><span class="pre">pyvib.base.</span></span><span class="sig-name descname"><span class="pre">write_minfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/base.html#write_minfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.base.write_minfo" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pyvib.blender">
+<span id="pyvib-blender-module"></span><h2>pyvib.blender module<a class="headerlink" href="#module-pyvib.blender" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyvib.blender.</span></span><span class="sig-name descname"><span class="pre">Visualizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vibration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.add_collection">
+<span class="sig-name descname"><span class="pre">add_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.add_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.add_collection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.angles">
+<span class="sig-name descname"><span class="pre">angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.angles" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.exclude_collection">
+<span class="sig-name descname"><span class="pre">exclude_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.exclude_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.exclude_collection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.join_object">
+<span class="sig-name descname"><span class="pre">join_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.join_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.join_object" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.plot_arrow">
+<span class="sig-name descname"><span class="pre">plot_arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.plot_arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.plot_arrow" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.plot_atom">
+<span class="sig-name descname"><span class="pre">plot_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.plot_atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.plot_atom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.plot_bonds">
+<span class="sig-name descname"><span class="pre">plot_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bonds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.plot_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.plot_bonds" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.blender.Visualizer.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/blender.html#Visualizer.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.blender.Visualizer.show" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyvib.local_cls">
+<span id="pyvib-local-cls-module"></span><h2>pyvib.local_cls module<a class="headerlink" href="#module-pyvib.local_cls" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyvib.local_cls.GroupLocalizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyvib.local_cls.</span></span><span class="sig-name descname"><span class="pre">GroupLocalizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mw_hess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/local_cls.html#GroupLocalizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.local_cls.GroupLocalizer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.local_cls.GroupLocalizer.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/local_cls.html#GroupLocalizer.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.local_cls.GroupLocalizer.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyvib.local_cls.Localizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyvib.local_cls.</span></span><span class="sig-name descname"><span class="pre">Localizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/local_cls.html#Localizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.local_cls.Localizer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.local_cls.Localizer.construct_unitary">
+<span class="sig-name descname"><span class="pre">construct_unitary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair_theta_dic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/local_cls.html#Localizer.construct_unitary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.local_cls.Localizer.construct_unitary" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.local_cls.Localizer.metric">
+<span class="sig-name descname"><span class="pre">metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_mat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/local_cls.html#Localizer.metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.local_cls.Localizer.metric" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyvib.local_cls.Localizer.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyvib/local_cls.html#Localizer.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyvib.local_cls.Localizer.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyvib.units">
+<span id="pyvib-units-module"></span><h2>pyvib.units module<a class="headerlink" href="#module-pyvib.units" title="Permalink to this heading"></a></h2>
+</section>
+<section id="pyvib-visual-cls-module">
+<h2>pyvib.visual_cls module<a class="headerlink" href="#pyvib-visual-cls-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-pyvib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyvib" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quick_start.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kentaro Hino.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

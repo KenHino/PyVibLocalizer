@@ -1,7 +1,0 @@
-c6h8 module
-===========
-
-.. automodule:: c6h8
-   :members:
-   :undoc-members:
-   :show-inheritance:
