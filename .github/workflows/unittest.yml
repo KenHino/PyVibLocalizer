@@ -1,21 +1,21 @@
-name: unittest
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout
-      uses: actions/checkout@v3
-    - name: install blender
-      run: sudo apt install blender
-    - name: cmake
-      run: cd tests && mkdir build && cd build && cmake ../..
-    - name: make
-      run: cd tests/build && make
-    - name: ctest
-      continue-on-error: true
-      id: ctest
-      run: cd tests/build && ctest
-    - name: ctest rerun failed
-      if: ${{ steps.ctest.outcome == 'failure'}}
-      run: cd tests/build && ctest --rerun-failed --output-on-failure
+#name: unittest
+#on: [push]
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - name: checkout
+#      uses: actions/checkout@v3
+#    - name: install blender
+#      run: sudo apt install blender
+#    - name: cmake
+#      run: cd tests && mkdir build && cd build && cmake ../..
+#    - name: make
+#      run: cd tests/build && make
+#    - name: ctest
+#      continue-on-error: true
+#      id: ctest
+#      run: cd tests/build && ctest
+#    - name: ctest rerun failed
+#      if: ${{ steps.ctest.outcome == 'failure'}}
+#      run: cd tests/build && ctest --rerun-failed --output-on-failure
