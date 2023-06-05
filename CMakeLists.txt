@@ -30,6 +30,7 @@ foreach(PYTHON_SITE_PACKAGE IN LISTS PYTHON_SITE_PACKAGES)
 endforeach()
 
 
+find_Package(Python)
 enable_testing()
 foreach(name foo modules)
  add_test(test_${name} ${Python_EXECUTABLE} -m pytest
