@@ -12,7 +12,7 @@ set(ENV{VIRTUAL_ENV} ${CMAKE_BINARY_DIR}/venv)
 set(Python_FIND_VIRTUALENV FIRST)
 set(BPython ${CMAKE_BINARY_DIR}/venv/bin/python)
 execute_process(COMMAND ${BPython} -m pip install --upgrade pip)
-execute_process(COMMAND ${BPython} -m pip install -r ${CMAKE_SOURCE_DIR}/requirements.txt)
+execute_process(COMMAND ${BPython} -m pip install ${CMAKE_SOURCE_DIR})
 execute_process(COMMAND blender_notebook install --blender-exec=${Blender})
 
 file(APPEND ${CMAKE_BINARY_DIR}/venv/bin/activate
@@ -24,10 +24,6 @@ file(APPEND ${CMAKE_BINARY_DIR}/venv/bin/activate
     "\n"
 )
 
-file(GLOB PYTHON_SITE_PACKAGES "${CMAKE_BINARY_DIR}/venv/lib/python*/site-packages/")
-foreach(PYTHON_SITE_PACKAGE IN LISTS PYTHON_SITE_PACKAGES)
-    file(WRITE ${PYTHON_SITE_PACKAGE}/pyvib.pth "${CMAKE_SOURCE_DIR}")
-endforeach()
 
 
 unset(Python_EXECUTABLE)
