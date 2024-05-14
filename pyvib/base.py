@@ -244,13 +244,20 @@ class Vibration:
         unit_xyz: Optional[str] ='Bohr',
         unit_xyz_hess: Optional[str] ='Bohr',
         unit_omega: Optional[str] ='Hartree',
-        unit_mass: Optional[str] ='a.u.'):
+        unit_mass: Optional[str] ='a.u.',
+        disp: Optional[List[List[float]]] =None):
 
-        if mw_disp is None:
+        self.atom = [a[0] for a in geom]
+        
+        if disp is not None:
+            self.disp = disp
+            mw_disp = self.set_mwdisp()
+        elif mw_disp is None:
             mw_disp = [[0.0 for _ in range(len(geom)*3)]]
             freq = [-1.0]
         else:
             assert len(freq) == len(mw_disp)
+        
 
         if unit_xyz.lower() in ['bohr', 'au', 'a.u.']:
             pass
@@ -280,7 +287,6 @@ class Vibration:
         self.mw_disp = np.array(mw_disp)
 
         self.geom = geom
-        self.atom = [a[0] for a in geom]
         self.coord = [c[1] for c in geom]
         self.bond = [[self.coord[i], self.coord[k]] for (i,k) in itertools.combinations(range(len(self.atom)), 2) \
                 if (mendeleev.element(self.atom[i]).covalent_radius_pyykko +
@@ -298,10 +304,16 @@ class Vibration:
         self.nmode = len(self.mw_disp)
 
     def set_disp(self):
-        disp = np.array(self.mw_disp)
+        self.disp = np.array(self.mw_disp)
         for i, a in enumerate(self.atom):
-            disp[:, 3*i:3*i+3] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
-        self.disp = disp.tolist()
+            self.disp[:, 3*i:3*i+3] /= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
+        return self.disp
+    
+    def set_mwdisp(self):
+        self.mw_disp = np.array(self.disp)
+        for i, a in enumerate(self.atom):
+            self.mw_disp[:, 3*i:3*i+3] *= math.sqrt(mendeleev.element(a).atomic_weight * units.DALTON)
+        return self.mw_disp
 
     def visualize(self, arrow_scale: Optional[float]=100,
             blender: Optional[bool] =False, atom_number: Optional[bool]=False):

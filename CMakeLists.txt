@@ -24,8 +24,6 @@ file(APPEND ${CMAKE_BINARY_DIR}/venv/bin/activate
     "\n"
 )
 
-
-
 unset(Python_EXECUTABLE)
 find_package(Python)
 enable_testing()
