@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyVibLocalizer &mdash; PyVibLocalizer 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quick Start" href="quick_start.html" />
+    <link rel="prev" title="Hello, vibration!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyVibLocalizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PyVibLocalizer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-mode">Local mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#group-localized-coordinate">Group Localized Coordinate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyvib.html">pyvib package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyVibLocalizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">PyVibLocalizer</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="pyviblocalizer">
+<h1>PyVibLocalizer<a class="headerlink" href="#pyviblocalizer" title="Permalink to this heading"></a></h1>
+<p><strong>visualize atomic mode and genetrate displacement vectors (normal/local mode, arbitary path)</strong></p>
+<img src="./_docs/pic/ch2o.png" width="400">
+<ul class="simple">
+<li><p><a class="reference external" href="https://kenhino.github.io/PyVibLocalizer/index.html#">Documentation</a></p></li>
+</ul>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KenHino/PyVibLocalizer
+</pre></div>
+</div>
+<ul>
+<li><p>Requirements</p>
+<ul>
+<li><p>must</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>mendeleev<span class="w"> </span>numpy<span class="w"> </span>scipy<span class="w"> </span>matplotlib
+</pre></div>
+</div>
+<p>if you use WSL2, below command may be needed.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>python3-tk
+</pre></div>
+</div>
+</li>
+<li><p>better</p>
+<ul>
+<li><p><a class="reference external" href="https://www.blender.org/">Blender</a></p>
+<p>If WSL2 or Ubuntu,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>blender<span class="w"> </span><span class="c1"># If Mac OS brew install --cask blender</span>
+</pre></div>
+</div>
+<p>In your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>set PYTHONHOME=`which python3` # May be not not required
+alias blender=&#39;blender --python-use-system-env&#39;
+</pre></div>
+</div>
+<p>When you execute <code class="docutils literal notranslate"><span class="pre">main.py</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blender</span> <span class="o">--</span><span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>If you use Jupyter Notebook</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>blender-notebook
+$<span class="w"> </span>blender_notebook<span class="w"> </span>install<span class="w"> </span>--blender-exec<span class="o">=</span><span class="s2">&quot;/usr/bin/blender&quot;</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">/usr/bin/blender</span></code> is your blender installed PATH.
+If required,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>subversion<span class="w"> </span><span class="c1"># If Mac OS brew install svn</span>
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>future_fstrings
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>bpy
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="https://wiki.fysik.dtu.dk/ase/">Atomic Simulation Environment</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>ase
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="local-mode">
+<h2>Local mode<a class="headerlink" href="#local-mode" title="Permalink to this heading"></a></h2>
+<p><a class="reference external" href="https://doi.org/10.1063/1.3077690">J. Chem. Phys. 130, 084106 (2009)</a></p>
+<ul class="simple">
+<li><p>Pipek-Mezy metric</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\xi_{\mathrm{at}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k} \sum_{i=1}^{n}\left(\tilde{C}_{i p}^{\mathrm{sub}}\right)^{2}\]</div>
+<div class="math notranslate nohighlight">
+\[\tilde{C}_{i p}^{\mathrm{sub}}=\sum_{\alpha=x, y, z}\left(\tilde{Q}_{i \alpha, p}^{\mathrm{sub}}\right)^{2}\]</div>
+<ul class="simple">
+<li><p>Boys metric</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\xi_{\mathrm{dist}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k}\left(\boldsymbol{R}_{p}^{\text {center }}\right)^{2}\]</div>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{R}_{p}^{\text {center }}=\sum_{i=1}^{n} \tilde{C}_{i p}^{\mathrm{sub}} \boldsymbol{R}_{i}\]</div>
+<p>To maximize, metrices, this program used <code class="docutils literal notranslate"><span class="pre">scipy.optimized.minimize_scalar</span></code>, in jacobi sweep method. The choice of unitary rotation mode pair is based on window frequency.: <a class="reference external" href="https://doi.org/10.1063/1.4963109">J. Chem. Phys. 145, 124112 (2016)</a> Default window frequency set as 400 cm-1.</p>
+</section>
+<section id="group-localized-coordinate">
+<h2>Group Localized Coordinate<a class="headerlink" href="#group-localized-coordinate" title="Permalink to this heading"></a></h2>
+<p>Group localized coordinate is one of the local mode, which diagonalize subspace mass-weighted hessian whose subspace is defined by your selction of atoms.</p>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.minfo</span></code> file can be made by <a class="reference external" href="https://tms.riken.jp/research/software/sindo/">SINDO</a></p></li>
+<li><p>to run this program, execute <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">{$mol_name}.py</span></code> (example; mol_name=ch2o, c6h8)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Hello, vibration!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quick_start.html" class="btn btn-neutral float-right" title="Quick Start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kentaro Hino.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
