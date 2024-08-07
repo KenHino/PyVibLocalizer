@@ -124,16 +124,16 @@ def read_fchk_g16(file_path : str
     Read Hessian in `.fchk` files from Gaussian16.
 
     Args:
-        file_path (str) : Path to ``fchk`` file.
-        use_trans (bool) : Use translational vector. Defaults to ``False``.
-        use_rot (bool) : Use rotatinal vector. Defaults to ``False``.
+        file_path (str): Path to ``fchk`` file.
+        use_trans (bool): Use translational vector. Defaults to ``False``.
+        use_rot (bool): Use rotatinal vector. Defaults to ``False``.
 
     Returns:
-        Tuple : multiple contents listed below.
+        Tuple: multiple contents listed below.
 
     Return contents:
-        - List[List[Union[str, Tuple[float, float, float]]]] : Geometry
-        - numpy.ndarray : mass-weighted hessian.
+        - List[List[Union[str, Tuple[float, float, float]]]]: Geometry
+        - numpy.ndarray: mass-weighted hessian.
 
     """
     from mendeleev import element
@@ -210,31 +210,32 @@ def read_fchk_g16(file_path : str
     return (geom, mass_weighted_hessian)
 
 class Vibration:
-    """ Main Vibraion class
+    r""" Main Vibraion class
 
     This class allows localization and visualization of vibrational modes.
 
     Attributes:
-        unit (str) : Unit of displacement vector. Defaults to ``Bohr``.
-        freq (Optional, List(float)) : The list of frequencies in cm-1.
-        mw_disp (Optional, List[List[float]]) : The list of mass-weighted displacement vectors. \
-                ``disp[imode][iatom_xyz]`` gives displacement from refernce coordinates.
-        mw_hess (Optional, np.ndarray) : mass-weighted hessian
-        geom (List[List[str, Tuple[float,flotat,float]]]) : Referenece geometry. \
-            ``geom[iatom][0]`` gives element symbol. \
+       unit (str): Unit of displacement vector. Defaults to ``Bohr``.
+       freq (Optional, List[float]): The list of frequencies in cm-1.
+       mw_disp (Optional, List[List[float]]): The list of mass-weighted displacement vectors.
+                `disp[imode][iatom_xyz]` gives displacement from refernce coordinates.
+       mw_hess (Optional, np.ndarray): mass-weighted hessian
+       geom (List[List[str, Tuple[float,flotat,float]]]): Referenece geometry.
+            ``geom[iatom][0]`` gives element symbol.
             ``geom[iatom][1]`` gives the refernce cartesian coordinate.
-        bond (List[List[Tuple[int,int]]]]) : The pair of atom coordinates which bonded each other.
-        nmode (int) : Number of modes.
-        natom (int) : Number of atoms.
-        Q_mat (numpy.ndarray) : Unitary matrix aligned displacement vectors.
+       bond (List[List[Tuple[int,int]]]): The pair of atom coordinates which bonded each other.
+       nmode (int): Number of modes.
+       natom (int): Number of atoms.
+       Q_mat (numpy.ndarray): Unitary matrix aligned displacement vectors.
 
     Args:
-        geom (List[List[str, Tuple[float,float,float]]]) : Referenece geometry. \
-            ``geom[iatom][0]`` gives element symbol. \
+       geom (List[List[str, Tuple[float,float,float]]]): Referenece geometry.
+            ``geom[iatom][0]`` gives element symbol.
             ``geom[iatom][1]`` gives the refernce cartesian coordinate.
-        freq (List[float]) : The list of frequencies in cm-1.
-        disp (List[List[float]]) : The list of displacement vectors. \
+       freq (List[float]): The list of frequencies in cm-1.
+       disp (List[List[float]]): The list of displacement vectors.
                 ``disp[imode][iatom_xyz]`` gives displacement from refernce coordinates.
+
     """
     def __init__(self,
         geom: List[List[Union[str, Tuple[float,float,float]]]],
@@ -322,9 +323,9 @@ class Vibration:
         Vibration mode visualization with Matplotlib and tinker.
 
         Args:
-            arrow_scale (float) : The scale of displacement arrows. Defaults to ``1``.
-            blender (Optional[bool]) : View by blender.
-            atom_number (Optional[bool]) : Plot atom number
+            arrow_scale (float): The scale of displacement arrows. Defaults to ``1``.
+            blender (Optional[bool]): View by blender.
+            atom_number (Optional[bool]): Plot atom number
 
         Examples:
             >>> sim = Vibration(geom, freq, disp)
@@ -383,22 +384,24 @@ class Vibration:
         Vibration mode localization with local_cls module.
 
         - Pipek-Mezey metric
-        .. math::
 
+        $$
             \xi_{\mathrm{at}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k} \sum_{i=1}^{n}\left(\tilde{C}_{i p}^{\mathrm{sub}}\right)^{2}
             \\
             \tilde{C}_{i p}^{\mathrm{sub}}=\sum_{\alpha=x, y, z}\left(\tilde{Q}_{i \alpha, p}^{\mathrm{sub}}\right)^{2}
+        $$
 
         - Boys metric
-        .. math::
 
+        $$
             \xi_{\mathrm{dist}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k}\left(\boldsymbol{R}_{p}^{\text {center }}\right)^{2}
             \\
             \boldsymbol{R}_{p}^{\text {center }}=\sum_{i=1}^{n} \tilde{C}_{i p}^{\mathrm{sub}} \boldsymbol{R}_{i}
+        $$
 
         Args:
-            option (str) : The metric of localization. ``Boys`` or ``Pipek-Mezey``.
-            window (float) : window frequency in cm-1.
+            option (str): The metric of localization. ``Boys`` or ``Pipek-Mezey``.
+            window (float): window frequency in cm-1.
 
         Examples:
             >>> sim = Vibration(geom, freq, disp)
@@ -434,11 +437,12 @@ class Vibration:
         unit_omega: Optional[str] ='au',
         unit_mass: Optional[str] ='au'
         ) -> Tuple[List[List[float]], List[float]]:
-        """Generate Group Localized Coordinate from mass-weighted hessian
+        r"""Generate Group Localized Coordinate from mass-weighted hessian
 
         Args:
-            mwhess (np.ndarray) : mass-weighted hessian
+            mwhess (np.ndarray): mass-weighted hessian
             domain (List[List[float]]): atomic domain such as [[0,1,2],[3,4]]
+
         """
         mw_hess = np.array(mw_hess)
         if unit_omega.lower() in ['cm1', 'cm', 'cm-1', 'kayser']:
