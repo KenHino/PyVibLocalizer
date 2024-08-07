@@ -1,7 +1,0 @@
-pytest
-jupyterlab
-numpy
-scipy
-matplotlib
-mendeleev
-blender-notebook
