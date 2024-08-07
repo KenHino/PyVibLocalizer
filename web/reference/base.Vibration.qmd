@@ -1,0 +1,111 @@
+# base.Vibration { #pyvib.base.Vibration }
+
+`base.Vibration(self, geom, freq=None, mw_disp=None, mw_hess=None, unit_xyz='Bohr', unit_xyz_hess='Bohr', unit_omega='Hartree', unit_mass='a.u.', disp=None)`
+
+Main Vibraion class
+
+This class allows localization and visualization of vibrational modes.
+
+## Attributes
+
+| Name    | Type                                                                                                                                              | Description                                                                                                                   |
+|---------|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| unit    | [str](`str`)                                                                                                                                      | Unit of displacement vector. Defaults to ``Bohr``.                                                                            |
+| freq    | ([Optional](`typing.Optional`), [List](`typing.List`)\[[float](`float`)\])                                                                        | The list of frequencies in cm-1.                                                                                              |
+| mw_disp | ([Optional](`typing.Optional`), [List](`typing.List`)\[[List](`typing.List`)\[[float](`float`)\]\])                                               | The list of mass-weighted displacement vectors.       `disp[imode][iatom_xyz]` gives displacement from refernce coordinates.  |
+| mw_hess | ([Optional](`typing.Optional`), [np](`numpy`).[ndarray](`numpy.ndarray`))                                                                         | mass-weighted hessian                                                                                                         |
+| geom    | [List](`typing.List`)\[[List](`typing.List`)\[[str](`str`), [Tuple](`typing.Tuple`)\[[float](`float`), [flotat](`flotat`), [float](`float`)\]\]\] | Referenece geometry.   ``geom[iatom][0]`` gives element symbol.   ``geom[iatom][1]`` gives the refernce cartesian coordinate. |
+| bond    | [List](`typing.List`)\[[List](`typing.List`)\[[Tuple](`typing.Tuple`)\[[int](`int`), [int](`int`)\]\]\]                                           | The pair of atom coordinates which bonded each other.                                                                         |
+| nmode   | [int](`int`)                                                                                                                                      | Number of modes.                                                                                                              |
+| natom   | [int](`int`)                                                                                                                                      | Number of atoms.                                                                                                              |
+| Q_mat   | [numpy](`numpy`).[ndarray](`numpy.ndarray`)                                                                                                       | Unitary matrix aligned displacement vectors.                                                                                  |
+
+## Parameters
+
+| Name   | Type                                                                                                                                            | Description                                                                                                                   | Default    |
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|------------|
+| `geom` | [List](`typing.List`)\[[List](`typing.List`)\[[str](`str`), [Tuple](`typing.Tuple`)\[[float](`float`), [float](`float`), [float](`float`)\]\]\] | Referenece geometry.   ``geom[iatom][0]`` gives element symbol.   ``geom[iatom][1]`` gives the refernce cartesian coordinate. | _required_ |
+| `freq` | [List](`typing.List`)\[[float](`float`)\]                                                                                                       | The list of frequencies in cm-1.                                                                                              | `None`     |
+| `disp` | [List](`typing.List`)\[[List](`typing.List`)\[[float](`float`)\]\]                                                                              | The list of displacement vectors.       ``disp[imode][iatom_xyz]`` gives displacement from refernce coordinates.              | `None`     |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [group_localize](#pyvib.base.Vibration.group_localize) | Generate Group Localized Coordinate from mass-weighted hessian |
+| [localize](#pyvib.base.Vibration.localize) | Localize vibrational modes. |
+| [visualize](#pyvib.base.Vibration.visualize) | Visualize vibrational modes. |
+
+### group_localize { #pyvib.base.Vibration.group_localize }
+
+`base.Vibration.group_localize(mw_hess, domain, unit_xyz='au', unit_omega='au', unit_mass='au')`
+
+Generate Group Localized Coordinate from mass-weighted hessian
+
+#### Parameters
+
+| Name     | Type                                                               | Description                           | Default    |
+|----------|--------------------------------------------------------------------|---------------------------------------|------------|
+| `mwhess` | [np](`numpy`).[ndarray](`numpy.ndarray`)                           | mass-weighted hessian                 | _required_ |
+| `domain` | [List](`typing.List`)\[[List](`typing.List`)\[[float](`float`)\]\] | atomic domain such as [[0,1,2],[3,4]] | _required_ |
+
+### localize { #pyvib.base.Vibration.localize }
+
+`base.Vibration.localize(option='Pipek-Mezey', window=400)`
+
+Localize vibrational modes.
+
+Vibration mode localization with local_cls module.
+
+- Pipek-Mezey metric
+
+$$
+    \xi_{\mathrm{at}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k} \sum_{i=1}^{n}\left(\tilde{C}_{i p}^{\mathrm{sub}}\right)^{2}
+    \\
+    \tilde{C}_{i p}^{\mathrm{sub}}=\sum_{\alpha=x, y, z}\left(\tilde{Q}_{i \alpha, p}^{\mathrm{sub}}\right)^{2}
+$$
+
+- Boys metric
+
+$$
+    \xi_{\mathrm{dist}}\left(\widetilde{\boldsymbol{Q}}^{\mathrm{sub}}\right)=\sum_{p=1}^{k}\left(\boldsymbol{R}_{p}^{\text {center }}\right)^{2}
+    \\
+    \boldsymbol{R}_{p}^{\text {center }}=\sum_{i=1}^{n} \tilde{C}_{i p}^{\mathrm{sub}} \boldsymbol{R}_{i}
+$$
+
+#### Parameters
+
+| Name     | Type             | Description                                              | Default         |
+|----------|------------------|----------------------------------------------------------|-----------------|
+| `option` | [str](`str`)     | The metric of localization. ``Boys`` or ``Pipek-Mezey``. | `'Pipek-Mezey'` |
+| `window` | [float](`float`) | window frequency in cm-1.                                | `400`           |
+
+#### Examples
+
+```python
+>>> sim = Vibration(geom, freq, disp)
+>>> sim.localize()
+```
+
+### visualize { #pyvib.base.Vibration.visualize }
+
+`base.Vibration.visualize(arrow_scale=100, blender=False, atom_number=False)`
+
+Visualize vibrational modes.
+
+Vibration mode visualization with Matplotlib and tinker.
+
+#### Parameters
+
+| Name          | Type                                            | Description                                          | Default   |
+|---------------|-------------------------------------------------|------------------------------------------------------|-----------|
+| `arrow_scale` | [float](`float`)                                | The scale of displacement arrows. Defaults to ``1``. | `100`     |
+| `blender`     | [Optional](`typing.Optional`)\[[bool](`bool`)\] | View by blender.                                     | `False`   |
+| `atom_number` | [Optional](`typing.Optional`)\[[bool](`bool`)\] | Plot atom number                                     | `False`   |
+
+#### Examples
+
+```python
+>>> sim = Vibration(geom, freq, disp)
+>>> sim.visualize()
+```

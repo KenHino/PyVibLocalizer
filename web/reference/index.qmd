@@ -1,0 +1,9 @@
+# API Docs {.doc .doc-index}
+
+## PyVib
+
+Python package for vibration analysis
+
+| | |
+| --- | --- |
+| [base.Vibration](base.Vibration.qmd#pyvib.base.Vibration) | Main Vibraion class |
