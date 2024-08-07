@@ -1,0 +1,1 @@
+Sitemap: https://KenHino.github.io/PyVibLocalizer/sitemap.xml
