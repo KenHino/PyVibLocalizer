@@ -1,0 +1,43 @@
+## Installation
+```bash
+$ git clone https://github.com/KenHino/PyVibLocalizer
+```
+
+- In WSL2 or Ubuntu,
+```bash
+$ sudo apt install blender
+```
+- In Mac, 
+```bash
+$ brew install --cask blender
+```
+
+or simply install from [homepage](https://www.blender.org/). 
+
+- First, modify PATH related to blender in `CMakeLists.txt` in PyVibLocalizer directory. Below is an example of PATH in Mac OS. (In Ubuntu, this may be `/usr/bin/blender`)
+```cmake
+set(BPython "/Applications/Blender.app/Contents/Resources/3.5/python/bin/python3.10")
+set(BPythonDir "/Applications/Blender.app/Contents/Resources/3.5/python/")
+set(Blender "/Applications/Blender.app/Contents/MacOS/Blender")
+```
+
+- Next, move to `test` directory and make `build` directory. And execute `cmake`.
+```bash
+$ cd test
+$ mkdir build
+$ cd build
+$ cmake ../..
+```
+
+- At last, activate virtual environment and execute a some example file such as `work/ch2o.py`.
+```bash
+$ source venv/bin/activate
+$ blender --python main.py
+```
+
+- And you can also use jupyter notebook in blender. 
+```bash
+$ jupyter-lab
+```
+In jupyter notebook, you can use `blender_kernel` to execute blender script. 
+

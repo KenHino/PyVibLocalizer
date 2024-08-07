@@ -1,0 +1,237 @@
+[
+  {
+    "objectID": "reference/base.html",
+    "href": "reference/base.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "reference/base.html#classes",
+    "href": "reference/base.html#classes",
+    "title": "",
+    "section": "Classes",
+    "text": "Classes\n\n\n\nName\nDescription\n\n\n\n\nVibration\nMain Vibraion class\n\n\n\n\nVibration\nbase.Vibration(self, geom, freq=None, mw_disp=None, mw_hess=None, unit_xyz='Bohr', unit_xyz_hess='Bohr', unit_omega='Hartree', unit_mass='a.u.', disp=None)\nMain Vibraion class\nThis class allows localization and visualization of vibrational modes.\n\nAttributes\n\n\n\nName\nType\nDescription\n\n\n\n\nunit\nstr\nUnit of displacement vector. Defaults to Bohr.\n\n\nfreq\n(Optional, List[float])\nThe list of frequencies in cm-1.\n\n\nmw_disp\n(Optional, List[List[float]])\nThe list of mass-weighted displacement vectors. disp[imode][iatom_xyz] gives displacement from refernce coordinates.\n\n\nmw_hess\n(Optional, np.ndarray)\nmass-weighted hessian\n\n\ngeom\nList[List[str, Tuple[float, flotat, float]]]\nReferenece geometry. geom[iatom][0] gives element symbol. geom[iatom][1] gives the refernce cartesian coordinate.\n\n\nbond\nList[List[Tuple[int, int]]]\nThe pair of atom coordinates which bonded each other.\n\n\nnmode\nint\nNumber of modes.\n\n\nnatom\nint\nNumber of atoms.\n\n\nQ_mat\nnumpy.ndarray\nUnitary matrix aligned displacement vectors.\n\n\n\n\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ngeom\nList[List[str, Tuple[float, float, float]]]\nReferenece geometry. geom[iatom][0] gives element symbol. geom[iatom][1] gives the refernce cartesian coordinate.\nrequired\n\n\nfreq\nList[float]\nThe list of frequencies in cm-1.\nNone\n\n\ndisp\nList[List[float]]\nThe list of displacement vectors. disp[imode][iatom_xyz] gives displacement from refernce coordinates.\nNone\n\n\n\n\n\nMethods\n\n\n\nName\nDescription\n\n\n\n\ngroup_localize\nGenerate Group Localized Coordinate from mass-weighted hessian\n\n\nlocalize\nLocalize vibrational modes.\n\n\nvisualize\nVisualize vibrational modes.\n\n\n\n\ngroup_localize\nbase.Vibration.group_localize(mw_hess, domain, unit_xyz='au', unit_omega='au', unit_mass='au')\nGenerate Group Localized Coordinate from mass-weighted hessian\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmwhess\nnp.ndarray\nmass-weighted hessian\nrequired\n\n\ndomain\nList[List[float]]\natomic domain such as [[0,1,2],[3,4]]\nrequired\n\n\n\n\n\n\nlocalize\nbase.Vibration.localize(option='Pipek-Mezey', window=400)\nLocalize vibrational modes.\nVibration mode localization with local_cls module.\n\nPipek-Mezey metric\n\n\\[\n    \\xi_{\\mathrm{at}}\\left(\\widetilde{\\boldsymbol{Q}}^{\\mathrm{sub}}\\right)=\\sum_{p=1}^{k} \\sum_{i=1}^{n}\\left(\\tilde{C}_{i p}^{\\mathrm{sub}}\\right)^{2}\n    \\\\\n    \\tilde{C}_{i p}^{\\mathrm{sub}}=\\sum_{\\alpha=x, y, z}\\left(\\tilde{Q}_{i \\alpha, p}^{\\mathrm{sub}}\\right)^{2}\n\\]\n\nBoys metric\n\n\\[\n    \\xi_{\\mathrm{dist}}\\left(\\widetilde{\\boldsymbol{Q}}^{\\mathrm{sub}}\\right)=\\sum_{p=1}^{k}\\left(\\boldsymbol{R}_{p}^{\\text {center }}\\right)^{2}\n    \\\\\n    \\boldsymbol{R}_{p}^{\\text {center }}=\\sum_{i=1}^{n} \\tilde{C}_{i p}^{\\mathrm{sub}} \\boldsymbol{R}_{i}\n\\]\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\noption\nstr\nThe metric of localization. Boys or Pipek-Mezey.\n'Pipek-Mezey'\n\n\nwindow\nfloat\nwindow frequency in cm-1.\n400\n\n\n\n\n\nExamples\n&gt;&gt;&gt; sim = Vibration(geom, freq, disp)\n&gt;&gt;&gt; sim.localize()\n\n\n\nvisualize\nbase.Vibration.visualize(arrow_scale=100, blender=False, atom_number=False)\nVisualize vibrational modes.\nVibration mode visualization with Matplotlib and tinker.\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\narrow_scale\nfloat\nThe scale of displacement arrows. Defaults to 1.\n100\n\n\nblender\nOptional[bool]\nView by blender.\nFalse\n\n\natom_number\nOptional[bool]\nPlot atom number\nFalse\n\n\n\n\n\nExamples\n&gt;&gt;&gt; sim = Vibration(geom, freq, disp)\n&gt;&gt;&gt; sim.visualize()"
+  },
+  {
+    "objectID": "reference/base.html#functions",
+    "href": "reference/base.html#functions",
+    "title": "",
+    "section": "Functions",
+    "text": "Functions\n\n\n\nName\nDescription\n\n\n\n\nread_fchk_g16\nRead Hessian in .fchk files from Gaussian16.\n\n\n\n\nread_fchk_g16\nbase.read_fchk_g16(file_path)\nRead Hessian in .fchk files from Gaussian16.\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nfile_path\nstr\nPath to fchk file.\nrequired\n\n\nuse_trans\nbool\nUse translational vector. Defaults to False.\nrequired\n\n\nuse_rot\nbool\nUse rotatinal vector. Defaults to False.\nrequired\n\n\n\n\n\nReturns\n\n\n\nType\nDescription\n\n\n\n\nTuple[str, np.ndarray, np.ndarray, np.ndarray, np.ndarray]\nmultiple contents listed below.\n\n\n\n\n\nReturn Contents\n\nList[List[Union[str, Tuple[float, float, float]]]]: Geometry\nnumpy.ndarray: mass-weighted hessian."
+  },
+  {
+    "objectID": "reference/local_cls.html",
+    "href": "reference/local_cls.html",
+    "title": "",
+    "section": "",
+    "text": "Code\n\n\n\n\n\nlocal_cls\nlocal_cls"
+  },
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "API Docs"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#pyvib",
+    "href": "reference/index.html#pyvib",
+    "title": "",
+    "section": "PyVib",
+    "text": "PyVib\nPython package for vibration analysis\n\n\n\nbase.Vibration\nMain Vibraion class",
+    "crumbs": [
+      "API Docs"
+    ]
+  },
+  {
+    "objectID": "quick_start.html",
+    "href": "quick_start.html",
+    "title": "Quick Start",
+    "section": "",
+    "text": "System : H\\({}_2\\)CO",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#install-and-satisfy-requirements",
+    "href": "quick_start.html#install-and-satisfy-requirements",
+    "title": "Quick Start",
+    "section": "1. Install and Satisfy requirements",
+    "text": "1. Install and Satisfy requirements\nSee README.md.",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#import-modules",
+    "href": "quick_start.html#import-modules",
+    "title": "Quick Start",
+    "section": "2. Import modules",
+    "text": "2. Import modules\n\n\nCode\nimport mendeleev\nimport numpy as np\nimport scipy\n\n\n\n\nCode\ntry:\n    import bpy\nexcept ImportError:\n    print('You cannot use Blender in Jupyter')\n    print('You must select jupyter kernel as blender when you use blender')\n    import matplotlib\ntry:\n    import ase\n    import ase.db\nexcept ImportError:\n    print('You cannot use ASE')\n\n\n\n\nCode\ntry:\n    import pyvib\nexcept ImportError:\n    print('Try execute in `src` directory or set $PYTHONPATH to pyvib')",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#prepare-geometry",
+    "href": "quick_start.html#prepare-geometry",
+    "title": "Quick Start",
+    "section": "3. Prepare Geometry",
+    "text": "3. Prepare Geometry\nDefine - atom element - coordinate\nFor example,\ngeom = [['C', (0.0, 0.0, 0.0)],\n        ['H', (1,0, 1.0, 1.0)]]\nHere, I use precalculated ase database.\n\n\nCode\ngeom, _ = pyvib.read_fchk_g16('./sample/ch2o.fchk')\n\n\n\n\nCode\ngeom\n\n\n[['O', (1.1408368, -0.000491967682, -0.000123437584)],\n ['C', (-1.13435014, 8.64849597e-05, -9.5923766e-06)],\n ['H', (-2.27091334, 0.465150475, -1.72441985)],\n ['H', (-2.27091603, -0.464367047, 1.72455288)]]",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#prepare-mass-weighted-hessian",
+    "href": "quick_start.html#prepare-mass-weighted-hessian",
+    "title": "Quick Start",
+    "section": "4. Prepare mass-weighted hessian",
+    "text": "4. Prepare mass-weighted hessian\nDefine - mass-weighted hessian (unit is a.u.)\nMass-weighted hessian is matrix \\(M_{ij}=\\frac{\\partial^2 E}{\\partial\\sqrt{m_i}x_i\\partial\\sqrt{m_j}x_j}\\) of the second derivative of energy \\(E\\) in terms of mass-weighted coordinates \\(\\sqrt{m_i}x_i\\). You can also obtain mass-weighted hessian from harmonic frequency and displacement vectors.\nYou can use pyvib.read_fchk_g16() for Gaussian16 or pyvib.read_minfo() for SINDO\n\n\nCode\n_, mw_hess = pyvib.read_fchk_g16('./sample/ch2o.fchk')\n\n\n\n\nCode\nmw_hess.shape\n\n\n(12, 12)",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#set-pyviblocalizer",
+    "href": "quick_start.html#set-pyviblocalizer",
+    "title": "Quick Start",
+    "section": "5. Set PyViblocalizer",
+    "text": "5. Set PyViblocalizer\n\nSet geometry and (hessian or (displacement vector and frequency))\nInput units can be specified in options, such as unit_mass='AMU'\n\nIn large system, it may takes a few minutes\n\n\nCode\nvib = pyvib.Vibration(geom, mw_hess=np.array(mw_hess), \n                      unit_omega='hartree', unit_mass='a.u.')\n\n\n/mnt/c/Users/hinom/GitHub/PyVibLocalizer/src/local_cls.py:147: RuntimeWarning: invalid value encountered in sqrt\n  np.sqrt(np.diag(self.unitary.T@self.mw_hess@self.unitary).tolist()))",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#visualize-in-tkintermatplotlib",
+    "href": "quick_start.html#visualize-in-tkintermatplotlib",
+    "title": "Quick Start",
+    "section": "6.1. Visualize in Tkinter+matplotlib",
+    "text": "6.1. Visualize in Tkinter+matplotlib",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#visualize-in-blender",
+    "href": "quick_start.html#visualize-in-blender",
+    "title": "Quick Start",
+    "section": "6.2. Visualize in Blender",
+    "text": "6.2. Visualize in Blender\n\n\nCode\ntry:\n    import bpy\n    vib.visualize(blender=True)\nexcept ImportError:\n    '''Not recommended'''\n    vib.visualize(blender=False)\n\n\n\n\n\nimage.png",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#localization",
+    "href": "quick_start.html#localization",
+    "title": "Quick Start",
+    "section": "7. Localization",
+    "text": "7. Localization\nReturns displacement vecotors in a.u. and frequency in a.u.",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#group-localization",
+    "href": "quick_start.html#group-localization",
+    "title": "Quick Start",
+    "section": "7.1 Group Localization",
+    "text": "7.1 Group Localization\n\n\nCode\nvib = pyvib.Vibration(geom, mw_hess=np.array(mw_hess), \n                      unit_omega='hartree', unit_mass='a.u.')\ndisp, freq = vib.group_localize(domain=[[0,1],[2,3]], mw_hess=np.array(mw_hess), \n                                   unit_omega='hartree', unit_mass='a.u.')\n\n\n\n\nCode\ntry:\n    import bpy\n    vib.visualize(blender=True)\nexcept ImportError:\n    vib.visualize(blender=False)\n\n\n\n\n\nimage.png",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "quick_start.html#metric-localization",
+    "href": "quick_start.html#metric-localization",
+    "title": "Quick Start",
+    "section": "7.2. Metric Localization",
+    "text": "7.2. Metric Localization\n\n\nCode\nvib = pyvib.Vibration(geom, mw_hess=np.array(mw_hess), \n                      unit_omega='hartree', unit_mass='a.u.')\ndisp, freq = vib.localize(option='Boys', window= 500)\n\n\ninitial zeta =  0.005301308461217721\n0 zeta =  0.006251004066510544 delta = 0.006251004066510544\n1 zeta =  0.006463777153999226 delta = 0.0002127730874886824\n2 zeta =  0.006469695881229195 delta = 5.918727229968675e-06\nBoys metric =  0.006469695881229195\n\n\n\n\nCode\ntry:\n    import bpy\n    vib.visualize(blender=True)\nexcept ImportError:\n    vib.visualize(blender=False)\n\n\n\n\n\nimage.png",
+    "crumbs": [
+      "Quick Start"
+    ]
+  },
+  {
+    "objectID": "Install.html",
+    "href": "Install.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "Install.html#installation",
+    "href": "Install.html#installation",
+    "title": "",
+    "section": "Installation",
+    "text": "Installation\n$ git clone https://github.com/KenHino/PyVibLocalizer\n\nIn WSL2 or Ubuntu,\n\n$ sudo apt install blender\n\nIn Mac,\n\n$ brew install --cask blender\nor simply install from homepage.\n\nFirst, modify PATH related to blender in CMakeLists.txt in PyVibLocalizer directory. Below is an example of PATH in Mac OS. (In Ubuntu, this may be /usr/bin/blender)\n\nset(BPython \"/Applications/Blender.app/Contents/Resources/3.5/python/bin/python3.10\")\nset(BPythonDir \"/Applications/Blender.app/Contents/Resources/3.5/python/\")\nset(Blender \"/Applications/Blender.app/Contents/MacOS/Blender\")\n\nNext, move to test directory and make build directory. And execute cmake.\n\n$ cd test\n$ mkdir build\n$ cd build\n$ cmake ../..\n\nAt last, activate virtual environment and execute a some example file such as work/ch2o.py.\n\n$ source venv/bin/activate\n$ blender --python main.py\n\nAnd you can also use jupyter notebook in blender.\n\n$ jupyter-lab\nIn jupyter notebook, you can use blender_kernel to execute blender script."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "PyVibLocalizer",
+    "section": "",
+    "text": "Welcome to PyVibLocalizer documentation!!"
+  },
+  {
+    "objectID": "index.html#contents",
+    "href": "index.html#contents",
+    "title": "PyVibLocalizer",
+    "section": "Contents",
+    "text": "Contents\n\nQuick Start\nAPI Doc"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "What is PyVibLocalizer?",
+    "section": "",
+    "text": "PyVibLocalizer is a Python package for localizing vibrational modes in molecular systems and visualize in Blender."
+  },
+  {
+    "objectID": "reference/visual_cls.html",
+    "href": "reference/visual_cls.html",
+    "title": "",
+    "section": "",
+    "text": "Code\n\n\n\n\n\nvisual_cls\nvisual_cls"
+  },
+  {
+    "objectID": "reference/units.html",
+    "href": "reference/units.html",
+    "title": "",
+    "section": "",
+    "text": "Code\n\n\n\n\n\nunits\nunits"
+  },
+  {
+    "objectID": "reference/base.Vibration.html",
+    "href": "reference/base.Vibration.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "reference/base.Vibration.html#attributes",
+    "href": "reference/base.Vibration.html#attributes",
+    "title": "",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\nName\nType\nDescription\n\n\n\n\nunit\nstr\nUnit of displacement vector. Defaults to Bohr.\n\n\nfreq\n(Optional, List[float])\nThe list of frequencies in cm-1.\n\n\nmw_disp\n(Optional, List[List[float]])\nThe list of mass-weighted displacement vectors. disp[imode][iatom_xyz] gives displacement from refernce coordinates.\n\n\nmw_hess\n(Optional, np.ndarray)\nmass-weighted hessian\n\n\ngeom\nList[List[str, Tuple[float, flotat, float]]]\nReferenece geometry. geom[iatom][0] gives element symbol. geom[iatom][1] gives the refernce cartesian coordinate.\n\n\nbond\nList[List[Tuple[int, int]]]\nThe pair of atom coordinates which bonded each other.\n\n\nnmode\nint\nNumber of modes.\n\n\nnatom\nint\nNumber of atoms.\n\n\nQ_mat\nnumpy.ndarray\nUnitary matrix aligned displacement vectors."
+  },
+  {
+    "objectID": "reference/base.Vibration.html#parameters",
+    "href": "reference/base.Vibration.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ngeom\nList[List[str, Tuple[float, float, float]]]\nReferenece geometry. geom[iatom][0] gives element symbol. geom[iatom][1] gives the refernce cartesian coordinate.\nrequired\n\n\nfreq\nList[float]\nThe list of frequencies in cm-1.\nNone\n\n\ndisp\nList[List[float]]\nThe list of displacement vectors. disp[imode][iatom_xyz] gives displacement from refernce coordinates.\nNone"
+  },
+  {
+    "objectID": "reference/base.Vibration.html#methods",
+    "href": "reference/base.Vibration.html#methods",
+    "title": "",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\ngroup_localize\nGenerate Group Localized Coordinate from mass-weighted hessian\n\n\nlocalize\nLocalize vibrational modes.\n\n\nvisualize\nVisualize vibrational modes.\n\n\n\n\ngroup_localize\nbase.Vibration.group_localize(mw_hess, domain, unit_xyz='au', unit_omega='au', unit_mass='au')\nGenerate Group Localized Coordinate from mass-weighted hessian\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmwhess\nnp.ndarray\nmass-weighted hessian\nrequired\n\n\ndomain\nList[List[float]]\natomic domain such as [[0,1,2],[3,4]]\nrequired\n\n\n\n\n\n\nlocalize\nbase.Vibration.localize(option='Pipek-Mezey', window=400)\nLocalize vibrational modes.\nVibration mode localization with local_cls module.\n\nPipek-Mezey metric\n\n\\[\n    \\xi_{\\mathrm{at}}\\left(\\widetilde{\\boldsymbol{Q}}^{\\mathrm{sub}}\\right)=\\sum_{p=1}^{k} \\sum_{i=1}^{n}\\left(\\tilde{C}_{i p}^{\\mathrm{sub}}\\right)^{2}\n    \\\\\n    \\tilde{C}_{i p}^{\\mathrm{sub}}=\\sum_{\\alpha=x, y, z}\\left(\\tilde{Q}_{i \\alpha, p}^{\\mathrm{sub}}\\right)^{2}\n\\]\n\nBoys metric\n\n\\[\n    \\xi_{\\mathrm{dist}}\\left(\\widetilde{\\boldsymbol{Q}}^{\\mathrm{sub}}\\right)=\\sum_{p=1}^{k}\\left(\\boldsymbol{R}_{p}^{\\text {center }}\\right)^{2}\n    \\\\\n    \\boldsymbol{R}_{p}^{\\text {center }}=\\sum_{i=1}^{n} \\tilde{C}_{i p}^{\\mathrm{sub}} \\boldsymbol{R}_{i}\n\\]\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\noption\nstr\nThe metric of localization. Boys or Pipek-Mezey.\n'Pipek-Mezey'\n\n\nwindow\nfloat\nwindow frequency in cm-1.\n400\n\n\n\n\n\nExamples\n&gt;&gt;&gt; sim = Vibration(geom, freq, disp)\n&gt;&gt;&gt; sim.localize()\n\n\n\nvisualize\nbase.Vibration.visualize(arrow_scale=100, blender=False, atom_number=False)\nVisualize vibrational modes.\nVibration mode visualization with Matplotlib and tinker.\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\narrow_scale\nfloat\nThe scale of displacement arrows. Defaults to 1.\n100\n\n\nblender\nOptional[bool]\nView by blender.\nFalse\n\n\natom_number\nOptional[bool]\nPlot atom number\nFalse\n\n\n\n\n\nExamples\n&gt;&gt;&gt; sim = Vibration(geom, freq, disp)\n&gt;&gt;&gt; sim.visualize()"
+  }
+]
